@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import io from 'socket.io-client'; 
 import './App.css';
 import Lobby from './components/Lobby';
 import LogIn from './components/LogIn';
@@ -30,7 +31,7 @@ function App() {
   if (state.isLoggedIn) {
     return (
       <div className="App">
-        <Lobby state={state} updateState={updateState} />
+        <Lobby />
       </div>
     );
   }

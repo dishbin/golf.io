@@ -1,57 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import LobbyChat from './LobbyChat';
+import LobbyChatInput from './LobbyChatInput';
 
 function Lobby({ state, updateState }) {
 
-    const [display, setDisplay] = useState('fetching');
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socket = io('http://localhost:5000');
+        const newSocket = io('http://localhost:3000');
+        setSocket(newSocket);
+        return () => newSocket.close();
+    }, [setSocket]);
 
-        socket.on('connect', () => {
-            let newUserData = {
-                username: state.username
-            }
-            socket.emit('new user', newUserData);
-        })
 
-        socket.on('new connection', (socketId) => {
-            console.log(socketId);
-            let newUserData = {
-                socketId: socketId,
-                username: state.username
-            }
-            socket.emit('new user', newUserData);
-        });
-
-        socket.on('connect_error', ()=>{
-            setTimeout(() => {
-                socket.connect()
-            },5000);
-        });
-
-        socket.on('user connected', (data) => {
-            updateState(data);
-            socket.emit('update success');
-        });
-
-        socket.on('success', () => {
-            setDisplay('succes!');
-        });
-
-        socket.on('disconnect', () => {
-            console.log('server disconnected');
-            setDisplay('disconnected');
-        });
-
-    },[]);
 
     return (
+        
         <div>
-            <p>{display}</p>
-            <p>{state.lobby.userList}</p>
-            <p>{state.lobby.tableList}</p>
-            <p>{state.lobby.messageList}</p>
+            { socket ? (
+                    <div>
+                        <LobbyChat socket={socket} />
+                        <LobbyChatInput socket={socket} />
+                    </div>
+                ) : (
+                    <div>
+                        <p>not connected</p>
+                    </div>
+                )
+            }
         </div>
     );
 }

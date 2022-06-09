@@ -1,4 +1,4 @@
-import { uuidv4 } from 'uuidv4';
+const { uuid } = require('uuidv4');
 
 const messages = new Set();
 const users = new Map();
@@ -33,7 +33,7 @@ class Connection {
 
     handleMessage (value) {
         const message = {
-            id: uuidv4(),
+            id: uuid(),
             user: users.get(this.socket) || defaultUser,
             value,
             time: Date.now()
