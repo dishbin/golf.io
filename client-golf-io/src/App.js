@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client'; 
 import './App.css';
-import Lobby from './components/Lobby';
-import LogIn from './components/LogIn';
+import LogIn from './components/login/LogIn';
+import Screen from './components/screen/Screen';
 
 function App() {
 
@@ -31,7 +31,7 @@ function App() {
   if (state.isLoggedIn) {
     return (
       <div className="App">
-        <Lobby />
+       <Screen />
       </div>
     );
   }
