@@ -8,37 +8,22 @@ function App() {
 
   const appStateInit = {
     isLoggedIn: false,
-    username: '',
-    lobby: {
-      userList: [],
-      tableList: [],
-      messageList: []
-    }
+    username: ''
   }
 
   const [state, setState] = useState(appStateInit);
-
-  const updateState = (ste) => {
-    const newStateKeys = Object.keys(ste);
-    let newState = {...state};
-    newStateKeys.forEach(key => {
-      newState[key] = ste[key];
-    });
-    setState(newState);
-  }
-
   
   if (state.isLoggedIn) {
     return (
       <div className="App">
-       <Screen />
+       <Screen state={state} setState={setState} />
       </div>
     );
   }
   else {
     return (
       <div className="App">
-        <LogIn state={state} updateState={updateState} />
+        <LogIn state={state} setState={setState} />
       </div>
     );
   }

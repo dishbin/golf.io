@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Lobby from '../lobby/Lobby';
 import { io } from 'socket.io-client';
 
-function Screen() {
+function Screen({ state, setState}) {
 
     const [inGame, setInGame] = useState(false);
 
@@ -26,7 +26,7 @@ function Screen() {
     {
         return (
             <div>
-                <Lobby socket={socket} />
+                <Lobby socket={socket} state={state} setState={setState} />
             </div>
         );
     }
