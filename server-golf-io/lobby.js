@@ -1,7 +1,13 @@
-const { uuid } = require('uuidv4');
+const { v4 } = require('uuid');
+const Table = require('./classes/table/Table');
 
 const messages = new Set();
 const users = new Map();
+const tables = new Map();
+for (let i = 0; i < 4; i++) {
+    let tbl = new Table('table' + (i + 1));
+    tables.set('table' + (i + 1), tbl);
+}
 
 const defaultUser = {
     id: 'anon',
@@ -15,12 +21,33 @@ class Connection {
         this.socket = socket;
         this.io = io;
 
+        socket.on('new user login', user => this.handleUser(user))
         socket.on('getMessages', () => this.getMessages());
-        socket.on('message', (value) => this.handleMessage(value));
+        socket.on('message', (message) => this.handleMessage(message));
         socket.on('dsconnect', () => this.disconnect());
         socket.on('connect_error', (err) => {
             console.log(`connect_error due to ${err.message}`);
         });
+    }
+    
+    handleUser (user) {
+        if (users.get(user.username) === undefined) {
+            const newUser = {
+                username: user.username,
+                socketId: user.socketId,
+                id: v4()
+            }
+            users.set(newUser.username, newUser);
+            this.sendUser(newUser);
+        }
+    }
+
+    sendUser (user) {
+        this.io.sockets.emit('lobby user', user);
+    }
+
+    getUsers () {
+        users.forEach((user) => this.sendUser(user));
     }
 
     sendMessage (message) {
@@ -33,7 +60,7 @@ class Connection {
 
     handleMessage (value) {
         const message = {
-            id: uuid(),
+            id: v4(),
             user: users.get(this.socket) || defaultUser,
             value,
             time: Date.now()

@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 
-function LogIn({ state, updateState }) {
+function LogIn({ state, setState }) {
 
     const logInStateInit = {
         username: '',
         isLoggedIn: false
     }
 
-    const [logInState, setLogInState] = useState(logInStateInit);
-
     const handleChange = (e) => {
-        setLogInState({...logInState, username: e.target.value});
+        setState({ ...state, username: e.target.value });
     };
 
     const handleLogIn = () => {
-        console.log('log in')
-        updateState({...logInState, isLoggedIn: true});
+        setState({ ...state, isLoggedIn: true });
     };
 
     return (
         <div>
-            <input type='text' value={logInState.username} onChange={handleChange} />
+            <input type='text' value={state.username} onChange={handleChange} />
             <button type='button' onClick={handleLogIn}>join lobby</button>
         </div>
     );

@@ -4,22 +4,38 @@ function LobbyChat({ socket }) {
 
     const [messages, setMessages] = useState({});
 
-    useEffect(() => {
-        const messageListener = (message) => {
-            setMessages((prevMessages) => {
-                const newMessages = {...prevMessages};
-                newMessages[message.id] = message;
-                return newMessages;
-            })
-        };
+    const messageListener = (message) => {
+        setMessages((prevMessages) => {
+            const newMessages = {...prevMessages};
+            newMessages[message.id] = message;
+            return newMessages;
+        })
+    };
 
-        const deleteMessageListener = (messageId) => {
-            setMessages((prevMessages) => {
-                const newMessages = {...prevMessages};
-                delete newMessages[messageId];
-                return newMessages;
-            })
-        };
+    const deleteMessageListener = (messageId) => {
+        setMessages((prevMessages) => {
+            const newMessages = {...prevMessages};
+            delete newMessages[messageId];
+            return newMessages;
+        })
+    };
+
+    useEffect(() => {
+        // const messageListener = (message) => {
+        //     setMessages((prevMessages) => {
+        //         const newMessages = {...prevMessages};
+        //         newMessages[message.id] = message;
+        //         return newMessages;
+        //     })
+        // };
+
+        // const deleteMessageListener = (messageId) => {
+        //     setMessages((prevMessages) => {
+        //         const newMessages = {...prevMessages};
+        //         delete newMessages[messageId];
+        //         return newMessages;
+        //     })
+        // };
 
         socket.on('message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
