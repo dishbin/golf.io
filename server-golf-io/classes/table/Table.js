@@ -16,9 +16,9 @@ class Table {
 
     }
 
-    joinTable (user) {
-        let emptySeat = this.seats.values().find(seat => seat === 'empty');
-        console.log(emptySeat);
+    static join (table, seating) {
+        table.seats[seating.seat] = seating.user;
+        return table;
     }
 };
 

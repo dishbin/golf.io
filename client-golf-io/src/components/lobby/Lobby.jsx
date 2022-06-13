@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import LobbyChat from '../lobby-chat/LobbyChat';
 import LobbyChatInput from '../input-lobby-chat/LobbyChatInput';
 import LobbyView from '../lobby-view/LobbyView';
 
 function Lobby({ socket, state, setState }) {
 
-    const handleUser = (newUser) => {
-        let users = state.users;
-        users.put(newUser.username, newUser);
-        setState({...state, users: users});
-    }
+    const [user, setUsers] = useState({});
 
-    const handleUsers = (userMap) => {
-        setState({...state, users: userMap});
-    }
+    const userListener = (user) => {
+        setUsers((prevUsers) => {
+            const newUsers = {...prevUsers};
+            newUsers[user.id] = user;
+            return newUsers;
+        })
+    };
 
-
+    const deleteUserListener = (userId) => {
+        setUsers((prevUsers) => {
+            const newUsers = {...prevUsers};
+            delete newUsers[userId];
+            return newUsers;
+        })
+    };
 
     useEffect(() => {
         socket.emit('new user login', {username: state.username, socketId: socket.id});
         socket.emit('')
 
-        socket.on('new user', newUser => handleUser(newUser));
-        socket.on('lobby users', userMap => handleUsers(userMap));
+        socket.on('new user', newUser => userListener(newUser));
+        socket.on('delete user', userId => deleteUserListener(userId));
     });
 
     return (
