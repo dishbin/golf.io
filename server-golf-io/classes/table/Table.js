@@ -7,11 +7,12 @@ class Table {
         this.name = name;
         this.isFull = false;
 
-        this.seats = new Map();
-        this.seats.set('A', 'empty');
-        this.seats.set('B', 'empty');
-        this.seats.set('C', 'empty');
-        this.seats.set('D', 'empty');
+        this.seats = {
+            A: 'empty',
+            B: 'empty',
+            C: 'empty',
+            D: 'empty',
+        }
 
     }
 

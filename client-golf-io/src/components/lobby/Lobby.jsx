@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import LobbyChat from '../lobby-chat/LobbyChat';
 import LobbyChatInput from '../input-lobby-chat/LobbyChatInput';
+import LobbyView from '../lobby-view/LobbyView';
 
 function Lobby({ socket, state, setState }) {
 
@@ -15,26 +16,14 @@ function Lobby({ socket, state, setState }) {
         setState({...state, users: userMap});
     }
 
-    const handleTable = (newTable) => {
-        let tables = state.tables;
-        tables.put(newTable.name, newTable);
-        setState({...state, tables: tables});
-    }
-
-    const handleTables = (tableMap) => {
-        setState({...state, tabels: tableMap});
-    }
-
 
 
     useEffect(() => {
         socket.emit('new user login', {username: state.username, socketId: socket.id});
+        socket.emit('')
 
         socket.on('new user', newUser => handleUser(newUser));
         socket.on('lobby users', userMap => handleUsers(userMap));
-
-        socket.on('new table', newTable => handleTable(newTable));
-        socket.on('lobby tables', tableMap => handleTables(tableMap));
     });
 
     return (
@@ -42,6 +31,7 @@ function Lobby({ socket, state, setState }) {
             <div>
                 <LobbyChat socket={socket} />
                 <LobbyChatInput socket={socket} />
+                <LobbyView socket={socket} state={state} setState={setState} />
             </div>
         </div>
         
