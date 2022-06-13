@@ -6,7 +6,8 @@ const users = new Map();
 const tables = new Map();
 for (let i = 0; i < 4; i++) {
     let tbl = new Table('table' + (i + 1));
-    tables.set('table' + (i + 1), tbl);
+    tbl.name = 'table' + (i + 1);
+    tables.set(tbl.id, tbl);
 }
 
 const defaultUser = {
@@ -21,10 +22,16 @@ class Connection {
         this.socket = socket;
         this.io = io;
 
-        socket.on('new user login', user => this.handleUser(user))
+        socket.on('new user login', user => this.handleUser(user));
+
         socket.on('getMessages', () => this.getMessages());
         socket.on('message', (message) => this.handleMessage(message));
-        socket.on('dsconnect', () => this.disconnect());
+
+        socket.on('getUsers', () => this.getUsers());
+
+        socket.on('getTables', () => this.getTables());
+
+        socket.on('disconnect', () => this.disconnect());
         socket.on('connect_error', (err) => {
             console.log(`connect_error due to ${err.message}`);
         });
@@ -34,7 +41,7 @@ class Connection {
         if (users.get(user.username) === undefined) {
             const newUser = {
                 username: user.username,
-                socketId: user.socketId,
+                socketId: this.socket.id,
                 id: v4()
             }
             users.set(newUser.username, newUser);
@@ -49,6 +56,8 @@ class Connection {
     getUsers () {
         users.forEach((user) => this.sendUser(user));
     }
+
+    // ***************
 
     sendMessage (message) {
         this.io.sockets.emit('message', message);
@@ -77,6 +86,20 @@ class Connection {
             messageExpirationTimeMS
         );
     }
+
+    // **************
+
+    sendTable (table) {
+        this.io.sockets.emit('table', table);
+    }
+
+    getTables () {
+        tables.forEach((table) => {
+            this.sendTable(table);
+        });
+    }
+
+    // ****************
 
     disconnect () {
         users.delete(this.socket);
