@@ -31,6 +31,8 @@ class Connection {
 
         socket.on('getTables', () => this.getTables());
 
+        socket.on('join table', seating => this.joinTable(socket, seating));
+
         socket.on('disconnect', () => this.disconnect());
         socket.on('connect_error', (err) => {
             console.log(`connect_error due to ${err.message}`);
@@ -97,6 +99,12 @@ class Connection {
         tables.forEach((table) => {
             this.sendTable(table);
         });
+    }
+
+    joinTable (socket, seating) {
+        socket.join(tables.get(seating.table).name);
+        tables[seating.table] = Table.join(tables.get(seating.table), seating);
+        this.io.sockets.in(tables.get(seating.table).name).emit('new seating', seating);
     }
 
     // ****************

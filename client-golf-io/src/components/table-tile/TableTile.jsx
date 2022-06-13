@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Seat from '../seat/Seat';
 
 function TableTile({ socket, table, state, setState }) {
-    console.log('>>>>>>>>>>>>>>>>>');
-    console.log(table);
+
+    useEffect(() => {
+        socket.on('new seating', seating => console.log('new seating in room: ' + seating.table, seating));
+    }, [socket]);
 
     return (
         <div>
-            {table.name}
+            <h3>{table.name}</h3>
             <div>
-                {Object.entries(table.seats).map(seat => <p key={seat[0]}>{seat[0]} : {seat[1]}</p>)}
+                <div>
+                    {Object.entries(table.seats)
+                        .map(seat => 
+                            <Seat 
+                                seatName={seat[0]}
+                                seat={seat[1]}
+                                socket={socket} 
+                                table={table.id}
+                                state={state} 
+                                setState={setState}
+                            />)}
+                </div>
             </div>
         </div>
     );
