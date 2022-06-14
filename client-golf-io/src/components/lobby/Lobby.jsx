@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import LobbyChat from '../lobby-chat/LobbyChat';
 import LobbyChatInput from '../input-lobby-chat/LobbyChatInput';
 import LobbyView from '../lobby-view/LobbyView';
+import './Lobby.css';
+import UserList from '../user-list/UserList';
 
 function Lobby({ socket, state, setState }) {
 
-    const [user, setUsers] = useState({});
+    const [users, setUsers] = useState({});
 
     const userListener = (user) => {
         setUsers((prevUsers) => {
@@ -32,11 +34,14 @@ function Lobby({ socket, state, setState }) {
     });
 
     return (
-        <div>
-            <div>
+        <div className='Lobby'>
+            <LobbyView socket={socket} state={state} setState={setState} />
+            <div className='chat-col'>
+                {(users) && 
+                    <UserList users={users} />
+                }   
                 <LobbyChat socket={socket} />
                 <LobbyChatInput socket={socket} />
-                <LobbyView socket={socket} state={state} setState={setState} />
             </div>
         </div>
         

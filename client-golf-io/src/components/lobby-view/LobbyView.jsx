@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TableTile from '../table-tile/TableTile';
+import './LobbyView.css';
 
 function LobbyView({ socket, state, setState }) {
 
@@ -34,7 +35,7 @@ function LobbyView({ socket, state, setState }) {
     }, [socket]);
 
     return (
-        <div>
+        <div className='LobbyView'>
             {(Object.keys(tables).length > 0) &&
                 Object.values(tables).map(table => {
                     return <TableTile key={table.name} socket={socket} table={table} state={state} setState={setState} />

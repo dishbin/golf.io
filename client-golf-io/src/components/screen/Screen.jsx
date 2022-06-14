@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Lobby from '../lobby/Lobby';
 import { io } from 'socket.io-client';
+import './Screen.css';
 
 function Screen({ state, setState}) {
 
@@ -17,7 +18,7 @@ function Screen({ state, setState}) {
     if (inGame && socket) 
     {
         return (
-            <div>
+            <div className='Screen'>
                 {/* game screen here */}
             </div>
         );
@@ -25,7 +26,7 @@ function Screen({ state, setState}) {
     else if (!inGame && socket) 
     {
         return (
-            <div>
+            <div className='Screen'>
                 <Lobby socket={socket} state={state} setState={setState} />
             </div>
         );
@@ -33,7 +34,7 @@ function Screen({ state, setState}) {
     else 
     {
         return (
-            <div>
+            <div className='Screen'>
                 <p>not connected</p>
             </div>
         );

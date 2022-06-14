@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import ChatMessage from '../chat-message/ChatMessage';
+import './LobbyChat.css';
 
 function LobbyChat({ socket }) {
 
@@ -40,7 +42,7 @@ function LobbyChat({ socket }) {
         socket.on('message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
         socket.emit('getMessages');
-
+        
         return () => {
             socket.off('message', messageListener);
             socket.off('deleteMessage', deleteMessageListener);
@@ -48,18 +50,12 @@ function LobbyChat({ socket }) {
     }, [socket]);
 
     return (
-        <div className='lobby-chat'>
+        <div className='LobbyChat'>
             {[...Object.values(messages)]
                 .sort((a,b) => a.time - b.time)
                 .map((message) => {
                     return (
-                    <div 
-                        key={message.id}
-                        title={`Sent at ${new Date(message.time).toLocaleTimeString}`}
-
-                    >
-                        <p>{message.value}</p>
-                    </div>
+                        <ChatMessage key={message.id} message={message} />
                     )
                 })
                 

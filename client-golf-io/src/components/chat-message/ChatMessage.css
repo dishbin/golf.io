@@ -1,0 +1,14 @@
+.ChatMessage {
+    margin: none;
+    padding: 0.25em;
+    width: auto;
+    height: 1em;
+}
+
+.username {
+    color: red;
+}
+
+.hover {
+    color: blue;
+}

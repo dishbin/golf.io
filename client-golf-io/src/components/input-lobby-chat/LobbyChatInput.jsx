@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './LobbyChatInput.css';
 
 function LobbyChatInput({ socket }) {
 

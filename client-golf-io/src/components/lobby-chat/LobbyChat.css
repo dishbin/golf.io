@@ -1,5 +1,14 @@
-.lobby-chat {
-    border: 2px solid black;
-    width: 10em;
-    height: 30em;
+.LobbyChat {
+    width: 15em;
+    height: 26em;
+    background-color: #CCCCCC;
+    box-shadow: 0em 0em 1em black;
+    margin: 1em;
+    margin-left: 0em;
+    margin-bottom: 0em;
+    padding: 1em;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
 }
