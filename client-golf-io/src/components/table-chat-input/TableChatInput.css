@@ -1,0 +1,13 @@
+.TableChatInput {
+}
+
+.text-input {
+    width: 18em;
+    margin: 1em;
+    margin-left: 0em;
+    margin-bottom: 0em;
+    margin-top: 0.25em;
+    padding: 0.25em;
+    padding-bottom: 1em;
+    box-shadow: 0em 1em 1em #888888;
+}

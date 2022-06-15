@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import './LobbyChatInput.css';
+import './TableChatInput.css';
 
-function LobbyChatInput({ socket, state, setState }) {
+function TableChatInput({ socket, state, setState, table }) {
 
     const [value, setValue] = useState('');
 
     const submitForm = (e) => {
-        console.log(state);
         e.preventDefault();
-        socket.emit('lobby message', value);
+        socket.emit('table message', {value: value, location: 'tableTYPE:ID' + state.table.id});
         setValue('');
     };
     
@@ -19,7 +18,7 @@ function LobbyChatInput({ socket, state, setState }) {
                     className='text-input'
                     autoFocus
                     value={value}
-                    placeholder='say to lobby'
+                    placeholder={`'say to ${state.table.name}`}
                     onChange={(e) => {
                         setValue(e.currentTarget.value);
                     }}
@@ -29,4 +28,4 @@ function LobbyChatInput({ socket, state, setState }) {
     );
 }
 
-export default LobbyChatInput;
+export default TableChatInput;

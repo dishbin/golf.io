@@ -1,0 +1,20 @@
+.TableTile {
+    box-shadow: 0em 0em 1em gray;
+    width: 20em;
+    height: 20em;
+    margin: 1em auto;
+    padding: 0.5em;
+}
+
+.table-name {
+    color: purple;
+    margin: 0em auto;
+}
+
+.seat-array {
+    width: 18em;
+    height: 18em;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0em auto;
+}

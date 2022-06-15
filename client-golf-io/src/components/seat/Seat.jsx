@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './Seat.css';
 
 function Seat({ socket, seat, table, seatName, state, setState }) {
 
@@ -9,8 +10,8 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     const joinTable = (socket) => {
         socket.emit('join table', {
-            socketId: socket.id,
-            user: state.username,
+            socketId: state.user.socketId,
+            user: state.user,
             seat: seatName,
             table: table
         });
@@ -18,13 +19,16 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     if (seat !== 'empty') {
         return (
-            <div>
+            <div className='Seat filled'>
                 <p>not empty seat</p>
             </div>
         );
     } else {
         return (
-            <div onClick={() => joinTable(socket)}>
+            <div 
+                className='Seat empty'
+                onClick={() => joinTable(socket)}
+            >
                 <p>empty seat</p>
             </div>
         );

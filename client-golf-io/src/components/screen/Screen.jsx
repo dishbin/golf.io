@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Lobby from '../lobby/Lobby';
 import { io } from 'socket.io-client';
+import './Screen.css';
+import TableScreen from '../table-screen/TableScreen';
 
 function Screen({ state, setState}) {
 
@@ -14,27 +16,27 @@ function Screen({ state, setState}) {
         return () => newSocket.close();
     }, [setSocket]);
 
-    if (inGame && socket) 
+    if (inGame && socket && state.table) 
     {
         return (
-            <div>
-                {/* game screen here */}
+            <div className='Screen'>
+                <TableScreen socket={socket} state={state} setState={setState} setInGame={setInGame} />
             </div>
         );
     } 
     else if (!inGame && socket) 
     {
         return (
-            <div>
-                <Lobby socket={socket} state={state} setState={setState} />
+            <div className='Screen'>
+                <Lobby socket={socket} state={state} setState={setState} setInGame={setInGame}/>
             </div>
         );
     }
     else 
     {
         return (
-            <div>
-                <p>not connected</p>
+            <div className='Screen'>
+                <p>connecting...</p>
             </div>
         );
     }

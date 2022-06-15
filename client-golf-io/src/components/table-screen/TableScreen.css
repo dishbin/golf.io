@@ -1,0 +1,9 @@
+.TableScreen {
+    display: flex;
+    flex-direction: row;
+}
+
+.chat-col {
+    display: flex;
+    flex-direction: column;
+}

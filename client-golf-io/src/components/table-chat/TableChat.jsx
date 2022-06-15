@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ChatMessage from '../chat-message/ChatMessage';
-import './LobbyChat.css';
+import './TableChat.css';
 
-function LobbyChat({ socket }) {
+function TableChat({ socket, state, setState }) {
 
     const [messages, setMessages] = useState({});
 
@@ -23,34 +23,19 @@ function LobbyChat({ socket }) {
     };
 
     useEffect(() => {
-        // const messageListener = (message) => {
-        //     setMessages((prevMessages) => {
-        //         const newMessages = {...prevMessages};
-        //         newMessages[message.id] = message;
-        //         return newMessages;
-        //     })
-        // };
-
-        // const deleteMessageListener = (messageId) => {
-        //     setMessages((prevMessages) => {
-        //         const newMessages = {...prevMessages};
-        //         delete newMessages[messageId];
-        //         return newMessages;
-        //     })
-        // };
-
-        socket.on('lobby message', messageListener);
+        console.log(state);
+        socket.on('table message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
-        socket.emit('get lobby messages');
+        socket.emit('get table messages', state.table);
         
         return () => {
-            socket.off('message', messageListener);
+            socket.off('table message', messageListener);
             socket.off('deleteMessage', deleteMessageListener);
         };
     }, [socket]);
 
     return (
-        <div className='LobbyChat'>
+        <div className='TableChat'>
             {[...Object.values(messages)]
                 .sort((a,b) => a.time - b.time)
                 .map((message) => {
@@ -64,4 +49,4 @@ function LobbyChat({ socket }) {
     );
 }
 
-export default LobbyChat;
+export default TableChat;

@@ -1,0 +1,13 @@
+.LobbyView {
+    width: 50em;
+    height: 35em;
+
+    box-shadow: 0em 0em 1em black;
+    margin: 1em;
+    padding: 1em;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    overflow: auto;
+}

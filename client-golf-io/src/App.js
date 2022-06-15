@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client'; 
 import './App.css';
 import LogIn from './components/login/LogIn';
@@ -16,7 +16,7 @@ function App() {
   if (state.isLoggedIn) {
     return (
       <div className="App">
-       <Screen state={state} setState={setState} />
+        <Screen state={state} setState={setState} />
       </div>
     );
   }
