@@ -14,6 +14,7 @@ function LobbyChatInput({ socket }) {
         <div>
             <form onSubmit={submitForm}>
                 <input 
+                    className='text-input'
                     autoFocus
                     value={value}
                     placeholder='say to lobby'

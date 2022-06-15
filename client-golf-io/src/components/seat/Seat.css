@@ -1,0 +1,14 @@
+.Seat {
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    margin: 2em;
+}
+
+.empty {
+    background-color: blue;
+}
+
+.filled {
+    background-color: red;
+}

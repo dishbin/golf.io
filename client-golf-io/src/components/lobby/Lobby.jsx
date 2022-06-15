@@ -8,6 +8,7 @@ import UserList from '../user-list/UserList';
 function Lobby({ socket, state, setState }) {
 
     const [users, setUsers] = useState({});
+    const [me, setMe] = useState(null);
 
     const userListener = (user) => {
         setUsers((prevUsers) => {
@@ -27,18 +28,17 @@ function Lobby({ socket, state, setState }) {
 
     useEffect(() => {
         socket.emit('new user login', {username: state.username, socketId: socket.id});
-        socket.emit('')
 
-        socket.on('new user', newUser => userListener(newUser));
+        socket.on('lobby user', newUser => userListener(newUser));
         socket.on('delete user', userId => deleteUserListener(userId));
-    });
+    }, []);
 
     return (
         <div className='Lobby'>
             <LobbyView socket={socket} state={state} setState={setState} />
             <div className='chat-col'>
                 {(users) && 
-                    <UserList users={users} />
+                    <UserList socket={socket} users={users} />
                 }   
                 <LobbyChat socket={socket} />
                 <LobbyChatInput socket={socket} />

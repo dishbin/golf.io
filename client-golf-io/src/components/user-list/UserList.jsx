@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import UserItem from '../UserItem.jsx/UserItem';
+import UserItem from '../user-item/UserItem';
 
-function UserList({ users }) {
-
-    const [usersInLobby, setUsersInLobby] = useState(null);
+function UserList({ users, socket }) {
 
     useEffect(() => {
         console.log(users);
-    })
+    }, [socket]);
 
     return (
         <div className='UserList'>
-            {/* {(users) &&
-                users.forEach(user => {
-                    return <UserItem key={user.username} user={user} />
+            {(users) &&
+                Object.values(users).map(user => {
+                    return <UserItem key={user.id} user={user} />
                 })
-            } */}
+            }
         </div>
     );
 }
