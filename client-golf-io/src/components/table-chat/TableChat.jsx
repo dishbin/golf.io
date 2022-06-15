@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ChatMessage from '../chat-message/ChatMessage';
 import './TableChat.css';
 
-function TableChat({ socket }) {
+function TableChat({ socket, state, setState }) {
 
     const [messages, setMessages] = useState({});
 
@@ -23,10 +23,10 @@ function TableChat({ socket }) {
     };
 
     useEffect(() => {
-
+        console.log(state);
         socket.on('table message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
-        socket.emit('get table messages');
+        socket.emit('get table messages', state.table);
         
         return () => {
             socket.off('table message', messageListener);

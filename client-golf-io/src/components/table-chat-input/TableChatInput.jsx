@@ -7,7 +7,7 @@ function TableChatInput({ socket, state, setState, table }) {
 
     const submitForm = (e) => {
         e.preventDefault();
-        socket.emit('table message', {value: value, table: state.table.id});
+        socket.emit('table message', {value: value, location: 'tableTYPE:ID' + state.table.id});
         setValue('');
     };
     
