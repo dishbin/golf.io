@@ -26,6 +26,9 @@ function LobbyView({ socket, state, setState }) {
 
         socket.on('table', table => tableListener(table));
         socket.on('delete table', deleteTableListener);
+
+        socket.on('user seating', tables => socket.emit('getTables'));
+
         socket.emit('getTables');
 
         return (() => {

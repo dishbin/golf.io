@@ -5,7 +5,7 @@ import LobbyView from '../lobby-view/LobbyView';
 import './Lobby.css';
 import UserList from '../user-list/UserList';
 
-function Lobby({ socket, state, setState }) {
+function Lobby({ socket, state, setState, setInGame }) {
 
     const [users, setUsers] = useState({});
 
@@ -13,7 +13,9 @@ function Lobby({ socket, state, setState }) {
         setUsers((prevUsers) => {
             const newUsers = {...prevUsers};
             newUsers[user.id] = user;
-            setState({...state, users: newUsers, user: user});
+            if (user.socketId === socket.id) {
+                setState({...state, users: newUsers, user: user});
+            }
             return newUsers;
         });
     };
@@ -26,6 +28,13 @@ function Lobby({ socket, state, setState }) {
         })
     };
 
+    const handleSeating = (seating, table) => {
+        if (socket.id === seating.user.socketId) {
+            setState({...state, table: table});
+            setInGame(true);
+        }
+    }
+
     useEffect(() => {
         socket.emit('new user login', {username: state.username, socketId: socket.id});
 
@@ -34,7 +43,7 @@ function Lobby({ socket, state, setState }) {
         });
         socket.on('delete user', userId => deleteUserListener(userId));
 
-        socket.on('in room', data => console.log(data));
+        socket.on('in room', data => handleSeating(data.seating, data.table));
 
         return (() => {
             socket.off('new user login');

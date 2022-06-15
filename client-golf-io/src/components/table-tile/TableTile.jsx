@@ -5,8 +5,8 @@ import './TableTile.css';
 function TableTile({ socket, table, state, setState }) {
 
     useEffect(() => {
-        socket.on('new seating', seating => console.log('new seating in room: ' + seating.table, seating));
     }, [socket]);
+
 
     return (
         <div className='TableTile'>

@@ -10,7 +10,7 @@ function ChatMessage({ message }) {
     console.log(message);
     return (
         <div className='ChatMessage' title={`Sent at ${new Date(message.time).toLocaleTimeString}`}>
-            <span className={`username ${(userHover) ? 'hover' : ''}`} onMouseEnter={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)}>{message.user.name}</span> : <span className={`message ${(messageHover) ? 'message-hover' : ''}`} onMouseEnter={() => setMessageHover(true)} onMouseLeave={() => setMessageHover(false)}>{message.value}</span>
+            <span className={`username ${(userHover) ? 'hover' : ''}`} onMouseEnter={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} style={{ color: message.user.textColor}}>{message.user.name}</span> : <span className={`message ${(messageHover) ? 'message-hover' : ''}`} onMouseEnter={() => setMessageHover(true)} onMouseLeave={() => setMessageHover(false)}>{message.value}</span>
         </div>
     );
 }

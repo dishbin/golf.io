@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Lobby from '../lobby/Lobby';
 import { io } from 'socket.io-client';
 import './Screen.css';
+import TableScreen from '../table-screen/TableScreen';
 
 function Screen({ state, setState}) {
 
@@ -19,7 +20,7 @@ function Screen({ state, setState}) {
     {
         return (
             <div className='Screen'>
-                {/* game screen here */}
+                <TableScreen socket={socket} state={state} setState={setState} setInGame={setInGame} />
             </div>
         );
     } 
@@ -27,7 +28,7 @@ function Screen({ state, setState}) {
     {
         return (
             <div className='Screen'>
-                <Lobby socket={socket} state={state} setState={setState} />
+                <Lobby socket={socket} state={state} setState={setState} setInGame={setInGame}/>
             </div>
         );
     }
