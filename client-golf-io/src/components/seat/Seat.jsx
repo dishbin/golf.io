@@ -10,8 +10,8 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     const joinTable = (socket) => {
         socket.emit('join table', {
-            socketId: socket.id,
-            user: state.username,
+            socketId: state.user.socketId,
+            user: state.user,
             seat: seatName,
             table: table
         });

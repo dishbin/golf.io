@@ -39,9 +39,9 @@ function LobbyChat({ socket }) {
         //     })
         // };
 
-        socket.on('message', messageListener);
+        socket.on('lobby message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
-        socket.emit('getMessages');
+        socket.emit('get lobby messages');
         
         return () => {
             socket.off('message', messageListener);

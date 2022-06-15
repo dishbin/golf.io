@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './LobbyChatInput.css';
 
-function LobbyChatInput({ socket }) {
+function LobbyChatInput({ socket, state, setState }) {
 
     const [value, setValue] = useState('');
+
     const submitForm = (e) => {
         e.preventDefault();
-        socket.emit('message', value);
+        socket.emit('lobby message', value);
         setValue('');
     };
     
