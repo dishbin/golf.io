@@ -30,6 +30,7 @@ function Lobby({ socket, state, setState, setInGame }) {
 
     const handleSeating = (seating, table) => {
         if (socket.id === seating.user.socketId) {
+            console.log(state);
             setState({...state, table: table});
             setInGame(true);
         }

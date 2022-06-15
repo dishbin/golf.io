@@ -16,7 +16,7 @@ function Screen({ state, setState}) {
         return () => newSocket.close();
     }, [setSocket]);
 
-    if (inGame && socket) 
+    if (inGame && socket && state.table) 
     {
         return (
             <div className='Screen'>
@@ -36,7 +36,7 @@ function Screen({ state, setState}) {
     {
         return (
             <div className='Screen'>
-                <p>not connected</p>
+                <p>connecting...</p>
             </div>
         );
     }

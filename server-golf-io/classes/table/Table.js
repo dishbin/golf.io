@@ -6,6 +6,7 @@ class Table {
         this.id = v4();
         this.name = name;
         this.isFull = false;
+        this.messages = new Set();
 
         this.seats = {
             A: 'empty',
@@ -20,6 +21,8 @@ class Table {
         table.seats[seating.seat] = seating.user;
         return table;
     }
+
+
 };
 
 module.exports = Table;
