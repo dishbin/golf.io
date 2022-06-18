@@ -1,0 +1,72 @@
+class TableHandler {
+
+    constructor (io, socket, rooms, room) {
+        this.io = io;
+        this.socket = socket;
+        this.rooms = rooms;
+        this.room = room;
+
+        socket.on('get all tables', data => this.sendAllTables(data));
+
+        socket.on('join table', data => this.handleSeating(data));
+
+        socket.on('player left', data => this.handleLeaving(data));
+
+    }
+
+    handleNewTable () {
+
+    }
+
+    deleteTable () {
+
+    }
+
+    sendTable (location, table) {
+        this.io.to(location).emit('new table', {
+            table: table
+        });
+    }
+
+    sendAllTables (data) {
+        this.rooms.forEach(table => {
+            if (table.name !== 'lobby') {
+                this.sendTable(data.user.socketId, table);  
+            }
+            
+        });
+    }
+
+    handleSeating (data) {
+        this.rooms.get('lobby').users.remove(data.user);
+        this.rooms.get(data.table).join(data);
+        this.socket.join(data.table);
+        this.room = this.rooms.get(data.table);
+        this.io.to('lobby').to(data.table).emit('user seating', {
+            ...data,
+            table: this.rooms.get(data.table)
+        });
+        this.io.to(data.socketId).emit('joined', {
+            ...data,
+            table: this.rooms.get(data.table)
+        });
+    }
+
+    handleLeaving(data) {
+        this.room.leave(data.user);
+        this.rooms.get('lobby').users.set(data.user);
+        this.socket.join('lobby');
+        this.room = this.rooms.get('lobby');
+        this.room.users.set(data.user)
+        this.io.to('lobby').to(data.table).emit('user got up', {
+            ...data
+            // table: this.rooms.get(data.table)
+        });
+        this.io.to(data.user.socketId).emit('rejoined lobby', {
+            ...data
+        })
+    }
+
+}
+
+module.exports = TableHandler;

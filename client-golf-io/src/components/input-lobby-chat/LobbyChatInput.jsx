@@ -6,9 +6,13 @@ function LobbyChatInput({ socket, state, setState }) {
     const [value, setValue] = useState('');
 
     const submitForm = (e) => {
-        console.log(state);
+        let data = {
+            user: state.user,
+            location: 'lobby',
+            value: value
+        }
         e.preventDefault();
-        socket.emit('lobby message', value);
+        socket.emit('new message', data);
         setValue('');
     };
     

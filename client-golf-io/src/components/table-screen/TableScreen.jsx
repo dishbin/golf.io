@@ -6,19 +6,24 @@ import './TableScreen.css';
 
 function TableScreen({ socket, state, setState, setInGame }) {
 
-    const handleTableUsers = (seat, user) => {
-        let newUsers = {...state.users};
-        newUsers[seat] = user;
-        if (socket.id === user.socketId) {
-            setState({...state, users: newUsers, user: user});
+    const handleSeating = (data) => {
+        let newUsers = {...state.table.users};
+        newUsers[data.seat] = data.user;
+        if (socket.id === data.user.socketId) {
+            setState({...state, users: newUsers, user: data.user});
         } else {
             setState({...state, users: newUsers});
         }
     }
 
+    const handleLeaving = (data) => {
+        console.log(data);
+    }
+
     useEffect(() => {
-        socket.on('table user', data => handleTableUsers(data.seat, data.user));
+        socket.on('user seating', data => handleSeating(data));
         socket.emit('get table users', state.table);
+        socket.on('user got up', data => handleLeaving(data));
     }, [socket]);
 
     return (

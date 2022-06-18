@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import ChatMessage from '../chat-message/ChatMessage';
 import './LobbyChat.css';
 
-function LobbyChat({ socket }) {
+function LobbyChat({ socket, state, setState }) {
 
     const [messages, setMessages] = useState({});
 
-    const messageListener = (message) => {
+    const messageListener = (data) => {
         setMessages((prevMessages) => {
             const newMessages = {...prevMessages};
-            newMessages[message.id] = message;
+            newMessages[data.message.id] = data.message;
             return newMessages;
         })
     };
@@ -23,28 +23,17 @@ function LobbyChat({ socket }) {
     };
 
     useEffect(() => {
-        // const messageListener = (message) => {
-        //     setMessages((prevMessages) => {
-        //         const newMessages = {...prevMessages};
-        //         newMessages[message.id] = message;
-        //         return newMessages;
-        //     })
-        // };
 
-        // const deleteMessageListener = (messageId) => {
-        //     setMessages((prevMessages) => {
-        //         const newMessages = {...prevMessages};
-        //         delete newMessages[messageId];
-        //         return newMessages;
-        //     })
-        // };
+        socket.on('new message', data => messageListener(data));
 
-        socket.on('lobby message', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
-        socket.emit('get lobby messages');
+        socket.emit('get all messages', {
+            user: state.user,
+            location: 'lobby'
+        });
         
         return () => {
-            socket.off('message', messageListener);
+            socket.off('new message', messageListener);
             socket.off('deleteMessage', deleteMessageListener);
         };
     }, [socket]);
