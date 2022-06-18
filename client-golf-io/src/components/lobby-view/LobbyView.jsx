@@ -27,7 +27,7 @@ function LobbyView({ socket, state, setState }) {
             const newTables = {...prevTables};
             newTables[data.table.id] = data.table;
             return newTables;
-        })
+        });
     }
 
     const handleLeaving = (data) => {
@@ -35,7 +35,7 @@ function LobbyView({ socket, state, setState }) {
             const newTables = {...prevTables};
             newTables[data.table.id] = data.table;
             return newTables;
-        })
+        });
     }
 
     useEffect(() => {

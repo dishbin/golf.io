@@ -5,7 +5,7 @@ import LobbyView from '../lobby-view/LobbyView';
 import './Lobby.css';
 import UserList from '../user-list/UserList';
 
-function Lobby({ socket, state, setState, setInGame }) {
+function Lobby({ socket, state, setState }) {
 
     const [users, setUsers] = useState({});
 
@@ -31,6 +31,7 @@ function Lobby({ socket, state, setState, setInGame }) {
     const handleSeating = (data) => {
         setState({
             ...state,
+            user: data.user,
             table: data.table,
             inGame: true
         });

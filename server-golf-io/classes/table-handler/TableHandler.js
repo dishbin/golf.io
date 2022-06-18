@@ -53,18 +53,21 @@ class TableHandler {
     }
 
     handleLeaving(data) {
-        this.room.leave(data.user);
+        this.room.leave(data);
         this.rooms.get('lobby').users.set(data.user);
-        this.socket.join('lobby');
+        if (Object.keys(this.rooms.get('lobby').users).includes(this.socket.id)) {
+            this.socket.join('lobby');
+        }
         this.room = this.rooms.get('lobby');
         this.room.users.set(data.user)
+        console.log(data);
+        console.log(this.room);
+        console.log(this.rooms.get(data.table.name));
         this.io.to('lobby').to(data.table).emit('user got up', {
-            ...data
-            // table: this.rooms.get(data.table)
+            ...data, 
+            table: this.rooms.get(data.table.name)
         });
-        this.io.to(data.user.socketId).emit('rejoined lobby', {
-            ...data
-        })
+        this.io.to(data.user.socketId).emit('rejoined lobby', data);
     }
 
 }

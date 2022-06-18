@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import './Screen.css';
 import TableScreen from '../table-screen/TableScreen';
 
-function Screen({ state, setState}) {
+function Screen({ state, setState }) {
 
     const [socket, setSocket] = useState(null);
 
@@ -22,7 +22,7 @@ function Screen({ state, setState}) {
             </div>
         );
     } 
-    else if (state.inGame !== true && socket) 
+    else if ((state.inGame !== true) && socket) 
     {
         return (
             <div className='Screen'>

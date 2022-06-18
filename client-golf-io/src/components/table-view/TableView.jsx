@@ -6,11 +6,9 @@ function TableView({ socket, state, setState, setInGame }) {
     useEffect(() => {
 
         socket.on('user seating', tables => socket.emit('getTables'));
-        socket.on('player left', data => console.log(data));
 
         return (() => {
             socket.off('user seating');
-            socket.off('player left');
         })
     }, [socket]);
 

@@ -22,7 +22,8 @@ class Table extends Store {
     }
 
     leave(data) {
-        this.users.remove(data);
+        this.users.remove(data.user);
+        this.seats[data.seat] = 'empty';
     }
 
 }

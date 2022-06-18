@@ -7,8 +7,12 @@ import './TableScreen.css';
 function TableScreen({ socket, state, setState, setInGame }) {
 
     const handleSeating = (data) => {
+        console.log('seating');
+        console.log(data);
         let newUsers = {...state.table.users};
         newUsers[data.seat] = data.user;
+        console.log(socket.id);
+        console.log(data.user.socketId);
         if (socket.id === data.user.socketId) {
             setState({...state, users: newUsers, user: data.user});
         } else {
@@ -17,7 +21,15 @@ function TableScreen({ socket, state, setState, setInGame }) {
     }
 
     const handleLeaving = (data) => {
+        console.log('leaving');
         console.log(data);
+        console.log(socket.id);
+        console.log(data.user.socketId);
+        if (socket.id === data.user.socketId) {
+            setState({...state, table: {}, inGame: false});
+        } else {
+            setState({...state, table: data.table});
+        }
     }
 
     useEffect(() => {
