@@ -19,7 +19,7 @@ function LobbyView({ socket, state, setState }) {
             const newTables = {...prevTables};
             delete newTables[tableId];
             return newTables;
-        })
+        });
     };
 
     const handleSeating = (data) => {
@@ -31,6 +31,8 @@ function LobbyView({ socket, state, setState }) {
     }
 
     const handleLeaving = (data) => {
+        console.log('leaving in lobby');
+        console.log(data);
         setTables((prevTables) => {
             const newTables = {...prevTables};
             newTables[data.table.id] = data.table;

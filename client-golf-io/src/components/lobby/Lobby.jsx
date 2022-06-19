@@ -29,6 +29,8 @@ function Lobby({ socket, state, setState }) {
     };
 
     const handleSeating = (data) => {
+        console.log('seating');
+        console.log(data);
         setState({
             ...state,
             user: data.user,
@@ -50,7 +52,7 @@ function Lobby({ socket, state, setState }) {
             socket.off('new user login');
             socket.off('new user connected');
             socket.off('delete user');
-            socket.off('in room');
+            socket.off('joined');
         })
     }, [socket]);
 

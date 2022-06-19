@@ -15,7 +15,7 @@ class Connection {
 
         // handlers ****************
 
-        const messageHandler = new MessageHandler(this.io, this.socket, this.location, this.room);
+        const messageHandler = new MessageHandler(this.io, this.socket, this.location, this.room, this.rooms);
         const userHandler = new UserHandler(this.io, this.socket, this.location, this.room);
         const tableHandle = new TableHandler(this.io, this.socket, this.rooms, this.room);
 

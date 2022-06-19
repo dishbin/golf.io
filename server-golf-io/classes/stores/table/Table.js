@@ -17,6 +17,7 @@ class Table extends Store {
     }
 
     join (data) {
+        console.log('joining ' + this.name);
         this.users.set(data.user);
         this.seats[data.seat] = data.user;
     }

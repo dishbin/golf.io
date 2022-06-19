@@ -7,8 +7,6 @@ import './TableScreen.css';
 function TableScreen({ socket, state, setState, setInGame }) {
 
     const handleSeating = (data) => {
-        console.log('seating');
-        console.log(data);
         let newUsers = {...state.table.users};
         newUsers[data.seat] = data.user;
         console.log(socket.id);
@@ -21,13 +19,18 @@ function TableScreen({ socket, state, setState, setInGame }) {
     }
 
     const handleLeaving = (data) => {
-        console.log('leaving');
-        console.log(data);
+        console.log('HERE');
         console.log(socket.id);
         console.log(data.user.socketId);
-        if (socket.id === data.user.socketId) {
+        if (socket.id === data.user.socketId) 
+        {
             setState({...state, table: {}, inGame: false});
-        } else {
+        } 
+        else if (
+            socket.id === data.user.socketId && 
+            Object.keys(data.table.users).includes(socket.id) === false
+        ) 
+        {
             setState({...state, table: data.table});
         }
     }
@@ -36,6 +39,11 @@ function TableScreen({ socket, state, setState, setInGame }) {
         socket.on('user seating', data => handleSeating(data));
         socket.emit('get table users', state.table);
         socket.on('user got up', data => handleLeaving(data));
+
+        return (() => {
+            socket.off('user seating', handleSeating);
+            socket.off('user got up', handleLeaving);
+        })
     }, [socket]);
 
     return (
