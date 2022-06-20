@@ -4,13 +4,11 @@ import TableChat from '../table-chat/TableChat';
 import TableChatInput from '../table-chat-input/TableChatInput';
 import './TableScreen.css';
 
-function TableScreen({ socket, state, setState, setInGame }) {
+function TableScreen({ socket, state, setState }) {
 
     const handleSeating = (data) => {
         let newUsers = {...state.table.users};
         newUsers[data.seat] = data.user;
-        console.log(socket.id);
-        console.log(data.user.socketId);
         if (socket.id === data.user.socketId) {
             setState({...state, users: newUsers, user: data.user});
         } else {
@@ -19,9 +17,6 @@ function TableScreen({ socket, state, setState, setInGame }) {
     }
 
     const handleLeaving = (data) => {
-        console.log('HERE');
-        console.log(socket.id);
-        console.log(data.user.socketId);
         if (socket.id === data.user.socketId) 
         {
             setState({...state, table: {}, inGame: false});
@@ -48,7 +43,7 @@ function TableScreen({ socket, state, setState, setInGame }) {
 
     return (
         <div className='TableScreen'>
-            <TableView socket={socket} state={state} setState={setState} setInGame={setInGame} />
+            <TableView socket={socket} state={state} setState={setState} />
             <div className='chat-col'>
                 {/* {(users) && 
                     <UserList socket={socket} users={users} />

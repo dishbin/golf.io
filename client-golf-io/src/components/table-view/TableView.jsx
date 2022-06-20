@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './TableView.css';
 
-function TableView({ socket, state, setState, setInGame }) {
+function TableView({ socket, state, setState }) {
 
     useEffect(() => {
 

@@ -1,5 +1,5 @@
 const uuidv4 = require('uuid').v4;
-const getTextColor = require('../utils/getTextColor');
+const getTextColor = require('../../utils/getTextColor');
 
 class UserHandler {
 
@@ -28,6 +28,16 @@ class UserHandler {
                 location: 'lobby', 
                 user: newUser
             });
+            this.io.to('lobby').emit('new message', {
+                location: 'lobby',
+                message: {
+                    id: uuidv4(),
+                    user: 'server',
+                    value: data.username + ' joined the lobby',
+                    location: 'lobby',
+                    time: Date.now()
+                }
+            })
         }
     }
 }

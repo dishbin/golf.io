@@ -7,11 +7,14 @@ function LobbyChat({ socket, state, setState }) {
     const [messages, setMessages] = useState({});
 
     const messageListener = (data) => {
-        setMessages((prevMessages) => {
-            const newMessages = {...prevMessages};
-            newMessages[data.message.id] = data.message;
-            return newMessages;
-        })
+        if (data.location === 'lobby') {
+            setMessages((prevMessages) => {
+                const newMessages = {...prevMessages};
+                newMessages[data.message.id] = data.message;
+                return newMessages;
+            }); 
+        }
+        
     };
 
     const deleteMessageListener = (messageId) => {
@@ -40,14 +43,15 @@ function LobbyChat({ socket, state, setState }) {
 
     return (
         <div className='LobbyChat'>
-            {[...Object.values(messages)]
-                .sort((a,b) => a.time - b.time)
-                .map((message) => {
-                    return (
-                        <ChatMessage key={message.id} message={message} />
-                    )
-                })
-                
+            {(messages) &&
+                [...Object.values(messages)]
+                    .sort((a,b) => a.time - b.time)
+                    .map((message) => {
+                        return (
+                            <ChatMessage key={message.id} message={message} />
+                        )
+                    })
+                    
             }
         </div>
     );
