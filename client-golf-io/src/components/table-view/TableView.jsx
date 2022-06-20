@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './TableView.css';
 
-function TableView({ socket, state, setState, setInGame }) {
+function TableView({ socket, state, setState }) {
 
     useEffect(() => {
 
         socket.on('user seating', tables => socket.emit('getTables'));
-        socket.on('player left', data => console.log(data));
 
         return (() => {
             socket.off('user seating');
-            socket.off('player left');
         })
     }, [socket]);
 
@@ -19,8 +17,7 @@ function TableView({ socket, state, setState, setInGame }) {
         let seat = Object.entries(tbl.seats).filter(pair => pair[1].name === state.username)[0];
         tbl.seats[seat[0]] = 'empty';
         socket.emit('player left', { table: tbl, seat: seat[0], user: seat[1]});
-        setInGame(false);
-        setState({...state, table: {}});
+        setState({...state, table: {}, inGame: false});
     }
 
     return (

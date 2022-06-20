@@ -4,9 +4,7 @@ import { io } from 'socket.io-client';
 import './Screen.css';
 import TableScreen from '../table-screen/TableScreen';
 
-function Screen({ state, setState}) {
-
-    const [inGame, setInGame] = useState(false);
+function Screen({ state, setState }) {
 
     const [socket, setSocket] = useState(null);
 
@@ -16,19 +14,19 @@ function Screen({ state, setState}) {
         return () => newSocket.close();
     }, [setSocket]);
 
-    if (inGame && socket && state.table) 
+    if (socket && state.table && state.inGame) 
     {
         return (
             <div className='Screen'>
-                <TableScreen socket={socket} state={state} setState={setState} setInGame={setInGame} />
+                <TableScreen socket={socket} state={state} setState={setState}/>
             </div>
         );
     } 
-    else if (!inGame && socket) 
+    else if ((state.inGame !== true) && socket) 
     {
         return (
             <div className='Screen'>
-                <Lobby socket={socket} state={state} setState={setState} setInGame={setInGame}/>
+                <Lobby socket={socket} state={state} setState={setState}/>
             </div>
         );
     }

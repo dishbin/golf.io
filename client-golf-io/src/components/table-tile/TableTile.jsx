@@ -4,6 +4,10 @@ import './TableTile.css';
 
 function TableTile({ socket, table, state, setState }) {
 
+    const handlePlayerLeaving = (targetTable, seat, user) => {
+        
+    }
+
     useEffect(() => {
         socket.on('player left', data => handlePlayerLeaving(data.table, data.seat, data.user));
     }, [socket]);
@@ -20,7 +24,7 @@ function TableTile({ socket, table, state, setState }) {
                                 seatName={seat[0]}
                                 seat={seat[1]}
                                 socket={socket} 
-                                table={table.id}
+                                table={table}
                                 state={state} 
                                 setState={setState}
                             />)}

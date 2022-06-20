@@ -13,7 +13,7 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
             socketId: state.user.socketId,
             user: state.user,
             seat: seatName,
-            table: table
+            table: table.name
         });
     }
 

@@ -6,10 +6,10 @@ function LobbyView({ socket, state, setState }) {
 
     const [tables, setTables] = useState({});
 
-    const tableListener = (table) => {
+    const tableListener = (data) => {
         setTables((prevTables) => {
             const newTables = {...prevTables};
-            newTables[table.id] = table;
+            newTables[data.table.id] = data.table;
             return newTables;
         })
     };
@@ -19,21 +19,43 @@ function LobbyView({ socket, state, setState }) {
             const newTables = {...prevTables};
             delete newTables[tableId];
             return newTables;
-        })
+        });
     };
+
+    const handleSeating = (data) => {
+        setTables((prevTables) => {
+            const newTables = {...prevTables};
+            newTables[data.table.id] = data.table;
+            return newTables;
+        });
+    }
+
+    const handleLeaving = (data) => {
+        console.log('leaving in lobby');
+        console.log(data);
+        setTables((prevTables) => {
+            const newTables = {...prevTables};
+            newTables[data.table.id] = data.table;
+            return newTables;
+        });
+    }
 
     useEffect(() => {
 
-        socket.on('table', table => tableListener(table));
-        socket.on('delete table', deleteTableListener);
+        socket.on('new table', data => tableListener(data));
+        socket.on('delete table', data => deleteTableListener(data));
 
-        socket.on('user seating', tables => socket.emit('getTables'));
+        socket.on('user seating', data => handleSeating(data));
+        socket.on('user got up', data => handleLeaving(data));
 
-        socket.emit('getTables');
+        socket.emit('get all tables', {
+            user: state.user
+        });
 
         return (() => {
-            socket.off('table', tableListener);
+            socket.off('new table', tableListener);
             socket.off('delete table', deleteTableListener);
+            socket.off('user seating', handleSeating);
         })
     }, [socket]);
 

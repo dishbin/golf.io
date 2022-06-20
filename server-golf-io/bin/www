@@ -7,8 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('server-golf-io:server');
 var http = require('http');
-var joinLobby = require('../lobby');
+var join = require('../classes/connection/Connection');
 var socketio = require('socket.io');
+const Store = require('../classes/stores/store/Store');
+const Table = require('../classes/stores/table/Table');
 
 /**
  * Get port from environment and store in Express.
@@ -28,7 +30,13 @@ var io = socketio(server, {
     methods: ['GET', 'POST']
   }
 });
-joinLobby(io);
+const rooms = new Map();
+rooms.set('lobby', new Store('lobby'));
+rooms.set('table1', new Table('table1'));
+rooms.set('table2', new Table('table2'));
+rooms.set('table3', new Table('table3'));
+rooms.set('table4', new Table('table4'));
+join(io, rooms);
 
 /**
  * Listen on provided port, on all network interfaces.

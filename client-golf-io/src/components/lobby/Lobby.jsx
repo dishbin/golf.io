@@ -5,16 +5,16 @@ import LobbyView from '../lobby-view/LobbyView';
 import './Lobby.css';
 import UserList from '../user-list/UserList';
 
-function Lobby({ socket, state, setState, setInGame }) {
+function Lobby({ socket, state, setState }) {
 
     const [users, setUsers] = useState({});
 
-    const userListener = (user) => {
+    const userListener = (data) => {
         setUsers((prevUsers) => {
             const newUsers = {...prevUsers};
-            newUsers[user.id] = user;
-            if (user.socketId === socket.id) {
-                setState({...state, users: newUsers, user: user});
+            newUsers[data.user.id] = data.user;
+            if (data.user.socketId === socket.id) {
+                setState({...state, users: newUsers, user: data.user});
             }
             return newUsers;
         });
@@ -28,42 +28,48 @@ function Lobby({ socket, state, setState, setInGame }) {
         })
     };
 
-    const handleSeating = (seating, table) => {
-        if (socket.id === seating.user.socketId) {
-            console.log(state);
-            setState({...state, table: table});
-            setInGame(true);
-        }
+    const handleSeating = (data) => {
+        console.log('seating');
+        console.log(data);
+        setState({
+            ...state,
+            user: data.user,
+            table: data.table,
+            inGame: true
+        });
     }
 
     useEffect(() => {
         socket.emit('new user login', {username: state.username, socketId: socket.id});
 
-        socket.on('lobby user', newUser => {
-            userListener(newUser)  
-        });
+        socket.on('new user connected', data => userListener(data));
+
         socket.on('delete user', userId => deleteUserListener(userId));
 
-        socket.on('in room', data => handleSeating(data.seating, data.table));
+        socket.on('joined', data => handleSeating(data));
 
         return (() => {
             socket.off('new user login');
-            socket.off('lobby user');
+            socket.off('new user connected');
             socket.off('delete user');
-            socket.off('in room');
+            socket.off('joined');
         })
     }, [socket]);
 
     return (
-        <div className='Lobby'>
-            <LobbyView socket={socket} state={state} setState={setState} />
-            <div className='chat-col'>
-                {(users) && 
-                    <UserList socket={socket} users={users} />
-                }   
-                <LobbyChat socket={socket} />
-                <LobbyChatInput socket={socket} state={state} setState={setState} />
-            </div>
+        <div>
+            {(state.user) &&
+                <div className='Lobby'>
+                    <LobbyView socket={socket} state={state} setState={setState} />
+                    <div className='chat-col'>
+                        {(users) && 
+                            <UserList socket={socket} users={users} />
+                        }
+                        <LobbyChat socket={socket} state={state} setState={setState} />
+                        <LobbyChatInput socket={socket} state={state} setState={setState} />
+                    </div>
+                </div>     
+            }     
         </div>
     );
 }
