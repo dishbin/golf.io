@@ -29,13 +29,12 @@ function Lobby({ socket, state, setState }) {
     };
 
     const handleSeating = (data) => {
-        console.log('seating');
-        console.log(data);
         setState({
             ...state,
             user: data.user,
             table: data.table,
-            inGame: true
+            inGame: true,
+            currentSeat: data.seat
         });
     }
 

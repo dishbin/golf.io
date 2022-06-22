@@ -6,11 +6,13 @@ function TableChatInput({ socket, state, setState, table }) {
     const [value, setValue] = useState('');
 
     const submitForm = (e) => {
-        e.preventDefault();
-        socket.emit('new message', {
+        let data = {
+            user: state.user,
             location: state.table.name,
-            value: value, 
-        });
+            value: value
+        }
+        e.preventDefault();
+        socket.emit('new message', data);
         setValue('');
     };
     

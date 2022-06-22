@@ -26,7 +26,7 @@ class Connection {
         const userHandler = new UserHandler(this.io, this.socket, this.location, this.room);
         const tableHandler = new TableHandler(this.io, this.socket, this.rooms, this.room);
         const roomHandler = new RoomHandler(this.io, this.socket, this.rooms);
-        const userMovementHandler = new UserMovementHandler(this.io, this.socket, this.rooms);
+        const userMovementHandler = new UserMovementHandler(this.io, this.socket, this.room, this.rooms);
         const gameHandler = new GameHandler(this.io, this.socket, this.rooms);
         const playerTurnHandler = new PlayerTurnHandler(this.io, this.socket, this.rooms);
         const scoringHandler = new ScoringHandler(this.io, this.socket, this.rooms);

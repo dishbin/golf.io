@@ -29,12 +29,9 @@ class MessageHandler {
 
     handleNewMessage(data) {
 
-        console.log('new message at ' + data.location);
-        console.log(data);
-
         let newMessage = {
             id: uuidv4(),
-            user: this.store.users.get(this.socket.id),
+            user: this.rooms.get(data.location).users.get(this.socket.id),
             value: data.value,
             location: data.location,
             time: Date.now()

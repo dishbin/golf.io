@@ -1,11 +1,20 @@
 .TableView {
-    width: 50em;
-    height: 35em;
+    width: 40em;
+    height: 40em;
 
     box-shadow: 0em 0em 1em black;
     margin: 1em;
-    padding: 1em;
+}
+
+.seat-div {
+    width: 35em;
+    height: 35em;
+
+    margin: 0em auto;
 
     display: flex;
+    
     flex-wrap: wrap;
+
+    transform: rotate(-45deg);
 }
