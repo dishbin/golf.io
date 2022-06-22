@@ -10,6 +10,8 @@ class TableHandler {
 
         socket.on('get all tables', data => this.sendAllTables(data));
 
+        socket.on('user is ready', data => this.handleUserReady(data));
+
         // socket.on('join table', data => this.handleSeating(data));
 
         // socket.on('player left', data => this.handleLeaving(data));
@@ -36,6 +38,19 @@ class TableHandler {
                 this.sendTable(data.user.socketId, table);  
             }
             
+        });
+    }
+
+    handleUserReady (data) {
+        let user = Object.entries(data.location.seats).find(seat => seat[1].id === data.user.id );
+        let table = data.location;
+        table.seats[user[0]] = {
+            ...user[1],
+            isReady: true
+        };
+        this.io.to(table.name).emit('user is ready', {
+            table: table,
+            user: data.user
         });
     }
 

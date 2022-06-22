@@ -14,7 +14,6 @@ function LobbyChat({ socket, state, setState }) {
                 return newMessages;
             }); 
         }
-        
     };
 
     const deleteMessageListener = (messageId) => {

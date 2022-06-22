@@ -1,9 +1,10 @@
 const uuidv4 = require('uuid').v4;
 
 class UserMovementHandler {
-    constructor (io, socket, rooms) {
+    constructor (io, socket, room, rooms) {
         this.io = io;
         this.socket = socket;
+        this.room = room;
         this.rooms = rooms;
 
         socket.on('join table', data => this.handleSeating(data));
@@ -14,16 +15,18 @@ class UserMovementHandler {
         this.rooms.get('lobby').users.remove(data.user);
         this.rooms.get(data.table).join(data);
         this.socket.join(data.table);
+        this.room = this.rooms.get(data.table);
         this.io.to('lobby').to(data.table).emit('user seating', {
             ...data,
-            table: this.rooms.get(data.table)
+            table: this.rooms.get(data.table),
+            seat: data.seat
         });
         this.io.to('lobby').emit('new message', {
             location: 'lobby',
             message: {
                 id: uuidv4(),
                 user: 'server',
-                value: data.user.name + ' sat at table ' + data.table,
+                value: data.user.name + ' sat at ' + data.table,
                 time: Date.now()
             }
         });
@@ -43,10 +46,9 @@ class UserMovementHandler {
     }
 
     handleLeaving(data) {
-        console.log('leavnig');
-        console.log(data);
         this.rooms.get(data.table.name).leave(data);
         this.rooms.get('lobby').users.set(data.user);
+        this.room = this.rooms.get('lobby');
         if (Object.keys(this.rooms.get('lobby').users).includes(this.socket.id)) {
             this.socket.join('lobby');
         }
@@ -60,12 +62,10 @@ class UserMovementHandler {
             message: {
                 id: uuidv4(),
                 user: 'server',
-                value: data.user.name + ' got up from table ' + data.table.name,
+                value: data.user.name + ' got up from ' + data.table.name,
                 time: Date.now()
             }
         });
-        console.log('leaving table');
-        console.log(data.table);
         this.io.to(data.table.name).emit('new message', {
             location: data.table.name,
             message: {
