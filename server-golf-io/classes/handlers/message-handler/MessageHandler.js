@@ -46,8 +46,11 @@ class MessageHandler {
 
         setTimeout(
             () => {
-                this.rooms.get(data.location).messages.delete(message);
-                this.io.sockets.emit('deleteMessage', message.id)
+                this.rooms.get(data.location).messages.delete(newMessage);
+                this.io.to(data.location).emit('delete message', {
+                    location: data.location,
+                    message: newMessage
+                });
             },
             messageExpirationTimeMS
         );

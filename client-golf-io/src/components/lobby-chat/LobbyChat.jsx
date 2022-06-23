@@ -16,10 +16,10 @@ function LobbyChat({ socket, state, setState }) {
         }
     };
 
-    const deleteMessageListener = (messageId) => {
+    const deleteMessageListener = (data) => {
         setMessages((prevMessages) => {
             const newMessages = {...prevMessages};
-            delete newMessages[messageId];
+            delete newMessages[data.message.id];
             return newMessages;
         })
     };
@@ -28,7 +28,7 @@ function LobbyChat({ socket, state, setState }) {
 
         socket.on('new message', data => messageListener(data));
 
-        socket.on('deleteMessage', deleteMessageListener);
+        socket.on('delete message', data => deleteMessageListener(data));
         socket.emit('get all messages', {
             user: state.user,
             location: 'lobby'
@@ -36,7 +36,7 @@ function LobbyChat({ socket, state, setState }) {
         
         return () => {
             socket.off('new message', messageListener);
-            socket.off('deleteMessage', deleteMessageListener);
+            socket.off('delete message', deleteMessageListener);
         };
     }, [socket]);
 
