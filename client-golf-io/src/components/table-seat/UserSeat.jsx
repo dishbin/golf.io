@@ -7,6 +7,8 @@ function UserSeat({ socket, seat, state, setState }) {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const handleUserReady = (data) => {
+        console.log(data);
+        console.log(seat);
         if (data.user.id === seat.id) {
             setIsPlaying(true);
         }

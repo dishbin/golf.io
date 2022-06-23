@@ -35,16 +35,33 @@ function TableView({ socket, state, setState }) {
     };
 
     const handleUserSeating = (data) => {
-        let seats = seatingArrangements[state.currentSeat];
-        let position = seats[data.seat];
-        let newPlayers = {...players};
-        newPlayers[position] = data.table.seats[data.seat];
-        setPlayers(newPlayers);
+        let players = Object.entries(data.table.seats);
+        handlePlayers({
+            players: players,
+            table: data.table
+        });
+    }
+
+    const handlePlayers = (data) => {
+        if (state.table.name === data.table.name) {
+            let seats = seatingArrangements[state.currentSeat];
+            let newPlayers = {...players};
+            data.players.forEach(player => {
+                let position = seats[player[0]];
+                newPlayers[position] = player[1];
+            }); 
+            setPlayers(newPlayers);
+        }
     }
 
     useEffect(() => {
 
         socket.on('user seating', data => handleUserSeating(data));
+        socket.on('all players', data => handlePlayers(data));
+        socket.emit('get players', {
+            location: state.table,
+            user: state.user
+        });
 
         return (() => {
             socket.off('user seating');
@@ -76,7 +93,12 @@ function TableView({ socket, state, setState }) {
                 </div>
             
             {(state.user) &&
-                <UserSeat socket={socket} state={state} setState={setState} />
+                <UserSeat 
+                    socket={socket} 
+                    state={state} 
+                    setState={setState} 
+                    seat={state.table.seats[state.currentSeat]}
+                />
 
             }
             {/* <button type='button' onClick={() => handleExit()} >exit game</button> */}
