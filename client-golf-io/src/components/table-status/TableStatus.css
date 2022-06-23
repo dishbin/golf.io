@@ -1,0 +1,8 @@
+.TableStatus {
+    background-color: green;
+
+    margin: auto;
+    margin-top: -5em;
+    width: 10em;
+    height: 10em;
+}

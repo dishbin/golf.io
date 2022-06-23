@@ -1,8 +1,6 @@
 .UserSeat {
-    width: 5em;
-    height: 5em;
-    margin: 6em;
+    width: 15em;
+    height: 10em;
+    margin: 2em auto;
     border: 1px solid black;
-
-    transform: rotate(45deg);
 }

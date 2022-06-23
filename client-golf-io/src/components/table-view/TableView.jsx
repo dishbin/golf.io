@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OtherPlayerSeat from '../other-player-seat/OtherPlayerSeat';
 import UserSeat from '../table-seat/UserSeat';
+import TableStatus from '../table-status/TableStatus';
 import './TableView.css';
 
 function TableView({ socket, state, setState }) {
@@ -81,17 +82,17 @@ function TableView({ socket, state, setState }) {
         <div className='TableView'>
             <div className='top-layer'>
                 <div className='other-players-div'>
-                    <div className='left-player'>
+                    <div className='player-div edge-player'>
                         <OtherPlayerSeat key='left-player' player={players.left}/>
                     </div>
-                    <div className='center-player'>
+                    <div className='player-div center-div'>
                         <OtherPlayerSeat key='center-player' player={players.center}/>
                     </div>
-                    <div className='right-player'>
+                    <div className='player-div edge-player'>
                         <OtherPlayerSeat key='right-player' player={players.right}/>
                     </div>
                 </div>
-            
+                <TableStatus socket={socket} state={state} setState={setState} />
             {(state.user) &&
                 <UserSeat 
                     socket={socket} 
