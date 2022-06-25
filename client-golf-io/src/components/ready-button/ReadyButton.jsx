@@ -7,6 +7,7 @@ function ReadyButton({ socket, state }) {
         socket.emit('user is ready', {
             location: state.table,
             user: state.user,
+            seat: state.currentSeat
         })
     }
 

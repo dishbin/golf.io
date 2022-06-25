@@ -12,8 +12,12 @@ class UserMovementHandler {
     }
 
     handleSeating (data) {
+        console.log('seating');
+        console.log(data);
         this.rooms.get('lobby').users.remove(data.user);
-        this.rooms.get(data.table).join(data);
+        let table = this.rooms.get(data.table);
+        console.log(this.rooms);
+        table.join(data);
         this.socket.join(data.table);
         this.room = this.rooms.get(data.table);
         this.io.to('lobby').to(data.table).emit('user seating', {
@@ -43,6 +47,11 @@ class UserMovementHandler {
             ...data,
             table: this.rooms.get(data.table)
         });
+        if (this.rooms.get(data.table).isFull) {
+            this.io.to('lobby').emit('table is full', {
+                table: this.rooms.get(data.table)
+            })
+        }
     }
 
     handleLeaving(data) {
@@ -76,6 +85,11 @@ class UserMovementHandler {
             }
         })
         this.io.to(data.user.socketId).emit('rejoined lobby', data);
+        if (this.rooms.get(data.table.name).isFull === false) {
+            this.io.to('lobby').emit('table not full', {
+                table: this.rooms.get(data.table.name)
+            });
+        }
     }
 }
 

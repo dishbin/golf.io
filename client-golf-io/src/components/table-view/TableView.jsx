@@ -15,23 +15,23 @@ function TableView({ socket, state, setState }) {
     const seatingArrangements = {
         A: {
             B: 'left',
-            C: 'center',
-            D: 'right'
+            D: 'center',
+            C: 'right'
         },
         B: {
-            C: 'left',
-            D: 'center',
+            D: 'left',
+            C: 'center',
             A: 'right'
         },
         C: {
-            D: 'left',
-            A: 'center',
-            B: 'right'
-        },
-        D: {
             A: 'left',
             B: 'center',
-            C: 'right'
+            D: 'right'
+        },
+        D: {
+            C: 'left',
+            A: 'center',
+            B: 'right'
         }
     };
 
@@ -49,6 +49,9 @@ function TableView({ socket, state, setState }) {
             let newPlayers = {...players};
             data.players.forEach(player => {
                 let position = seats[player[0]];
+                if (position === undefined) {
+                    position = 'user';
+                }
                 newPlayers[position] = player[1];
             }); 
             setPlayers(newPlayers);
@@ -92,7 +95,7 @@ function TableView({ socket, state, setState }) {
                         <OtherPlayerSeat key='right-player' player={players.right}/>
                     </div>
                 </div>
-                <TableStatus socket={socket} state={state} setState={setState} />
+                <TableStatus socket={socket} state={state} setState={setState} players={players}/>
             {(state.user) &&
                 <UserSeat 
                     socket={socket} 
@@ -102,7 +105,7 @@ function TableView({ socket, state, setState }) {
                 />
 
             }
-            {/* <button type='button' onClick={() => handleExit()} >exit game</button> */}
+            <button type='button' onClick={() => handleExit()} >exit game</button>
             </div>
         </div>
     );

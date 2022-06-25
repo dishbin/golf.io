@@ -24,6 +24,13 @@ class UserStore {
         this.users.delete(user.socketId);
     }
 
+    userDisconnected (socketId) {
+        console.log(Object.keys(this.users));
+        // if (Object.keys(this.users).includes(socketId)) {
+        //     this.users.delete(socketId);
+        // }
+    }
+
 }
 
 module.exports = UserStore;
