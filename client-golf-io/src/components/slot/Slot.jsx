@@ -1,5 +1,6 @@
 import React from 'react';
 import './Slot.css';
+import spadeImg from './suit-imgs/spade.png';
 
 function Slot({ socket, state, setState, slot, slotName }) {
     
@@ -20,12 +21,27 @@ function Slot({ socket, state, setState, slot, slotName }) {
         'joker': ''
     }
 
+    let suitImgs = {
+        spade: spadeImg
+    }
 
-    return (
-        <div className='Slot'>
-            <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}<div className={`${slot.card.suit} suit`}></div></span>
-        </div>
-    );
+
+    if (slot.isFaceUp) {
+        return (
+            <div className='Slot'>
+                <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}<img className='suit' src={suitImgs[slot.card.suit]}></img></span>
+            </div>
+        );
+    }
+    else 
+    {
+        return (
+            <div className='Slot face-down'>
+
+            </div>
+        ); 
+    }
+    
 }
 
 export default Slot;

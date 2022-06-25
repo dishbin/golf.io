@@ -9,26 +9,8 @@
     width: 13px;
     height: 13px;
     margin-left: 0.1em;
-    padding: none;
-    background-repeat: no-repeat;
 }
 
-.spades {
-    background-image: url('./spade.png');
-}
+.face-down {
 
-.clubs {
-    background-image: url('./clubs.png');
-}
-
-.diamonds {
-    background-image: url('./diamonds.png');
-}
-
-.hearts {
-    background-image: url('./hearts.png');
-}
-
-.joker {
-    background-image: url('./joker.png');
 }
