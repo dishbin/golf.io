@@ -44,7 +44,6 @@ class Game {
 
         this.discard = new DiscardPile(this.deck);
         this.discard.put(this.deck.draw());
-        console.log(this.discard);
     }
 
 }

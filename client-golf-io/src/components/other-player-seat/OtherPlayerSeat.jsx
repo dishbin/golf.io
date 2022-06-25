@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './OtherPlayerSeat.css';
 
-function OtherPlayerSeat({socket, state, setState, player}) {
+function OtherPlayerSeat({socket, state, setState, player, position}) {
 
-    console.log(player);
+    const [seatedPlayer, setSeatedPlayer] = useState('empty');
 
-    if (player === 'empty') {
+    const handleAllPlayers = (data) => {
+        console.log(data);
+        setSeatedPlayer(data.players.filter(player => player[0] === position)[0][1]);
+    }
+
+    useEffect(() => {
+        socket.on('all players', data => handleAllPlayers(data));
+    }, [socket]);
+
+    console.log(seatedPlayer);
+
+    if (seatedPlayer === 'empty') {
         return (
             <div className='OtherPlayerSeat empty'>
                 empty
             </div>
         );
     }
-    else if (player.name.substring(0,4) === 'NPC-')
+    else if (seatedPlayer !== 'empty' && seatedPlayer.playerType === 'NPC')
     {
         return (
             <div className='OtherPlayerSeat NPC'>
@@ -20,11 +31,11 @@ function OtherPlayerSeat({socket, state, setState, player}) {
             </div>
         );
     } 
-    else
+    else if (seatedPlayer !== 'empty' && seatedPlayer.playerType === undefined)
     {
         return (
             <div className='OtherPlayerSeat' style={{ backgroundColor: player.textColor }}>
-                {player.name}
+                {seatedPlayer.name}
             </div>
         );
     }

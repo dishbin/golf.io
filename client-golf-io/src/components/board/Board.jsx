@@ -16,8 +16,13 @@ function Board({ socket, state, setState, board }) {
         }
     }
 
+    const handleTurn = (data) => {
+        console.log('it\'s your turn');
+    }
+
     useEffect(() => {
         socket.on('player board', data => handlePlayerBoard(data));
+        socket.on('your turn', data => handleTurn(data));
         socket.emit('get player board', {
             table: state.table,
             game: state.game,
