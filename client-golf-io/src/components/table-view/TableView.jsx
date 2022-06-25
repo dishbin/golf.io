@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OtherPlayerSeat from '../other-player-seat/OtherPlayerSeat';
 import UserSeat from '../table-seat/UserSeat';
+import TableStatus from '../table-status/TableStatus';
 import './TableView.css';
 
 function TableView({ socket, state, setState }) {
@@ -14,37 +15,57 @@ function TableView({ socket, state, setState }) {
     const seatingArrangements = {
         A: {
             B: 'left',
-            C: 'center',
-            D: 'right'
+            D: 'center',
+            C: 'right'
         },
         B: {
-            C: 'left',
-            D: 'center',
+            D: 'left',
+            C: 'center',
             A: 'right'
         },
         C: {
-            D: 'left',
-            A: 'center',
-            B: 'right'
-        },
-        D: {
             A: 'left',
             B: 'center',
-            C: 'right'
+            D: 'right'
+        },
+        D: {
+            C: 'left',
+            A: 'center',
+            B: 'right'
         }
     };
 
     const handleUserSeating = (data) => {
-        let seats = seatingArrangements[state.currentSeat];
-        let position = seats[data.seat];
-        let newPlayers = {...players};
-        newPlayers[position] = data.table.seats[data.seat];
-        setPlayers(newPlayers);
+        let players = Object.entries(data.table.seats);
+        handlePlayers({
+            players: players,
+            table: data.table
+        });
+    }
+
+    const handlePlayers = (data) => {
+        if (state.table.name === data.table.name) {
+            let seats = seatingArrangements[state.currentSeat];
+            let newPlayers = {...players};
+            data.players.forEach(player => {
+                let position = seats[player[0]];
+                if (position === undefined) {
+                    position = 'user';
+                }
+                newPlayers[position] = player[1];
+            }); 
+            setPlayers(newPlayers);
+        }
     }
 
     useEffect(() => {
 
         socket.on('user seating', data => handleUserSeating(data));
+        socket.on('all players', data => handlePlayers(data));
+        socket.emit('get players', {
+            location: state.table,
+            user: state.user
+        });
 
         return (() => {
             socket.off('user seating');
@@ -64,22 +85,27 @@ function TableView({ socket, state, setState }) {
         <div className='TableView'>
             <div className='top-layer'>
                 <div className='other-players-div'>
-                    <div className='left-player'>
+                    <div className='player-div edge-player'>
                         <OtherPlayerSeat key='left-player' player={players.left}/>
                     </div>
-                    <div className='center-player'>
+                    <div className='player-div center-div'>
                         <OtherPlayerSeat key='center-player' player={players.center}/>
                     </div>
-                    <div className='right-player'>
+                    <div className='player-div edge-player'>
                         <OtherPlayerSeat key='right-player' player={players.right}/>
                     </div>
                 </div>
-            
+                <TableStatus socket={socket} state={state} setState={setState} players={players}/>
             {(state.user) &&
-                <UserSeat socket={socket} state={state} setState={setState} />
+                <UserSeat 
+                    socket={socket} 
+                    state={state} 
+                    setState={setState} 
+                    seat={state.table.seats[state.currentSeat]}
+                />
 
             }
-            {/* <button type='button' onClick={() => handleExit()} >exit game</button> */}
+            <button type='button' onClick={() => handleExit()} >exit game</button>
             </div>
         </div>
     );

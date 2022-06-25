@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Connection from './components/connection/Connection';
 import LogIn from './components/login/LogIn';
 import Screen from './components/screen/Screen';
 
@@ -15,7 +16,7 @@ function App() {
   if (state.isLoggedIn) {
     return (
       <div className="App">
-        <Screen state={state} setState={setState} />
+        <Connection state={state} setState={setState} />
       </div>
     );
   }

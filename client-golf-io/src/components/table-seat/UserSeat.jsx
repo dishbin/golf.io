@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import ReadyButton from '../ready-button/ReadyButton';
+import Board from '../board/Board';
+import PreGameUserSeat from '../pre-game-user-seat/PreGameUserSeat';
 import './UserSeat.css';
 
 function UserSeat({ socket, seat, state, setState }) {
 
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const handleUserReady = (data) => {
-        if (data.user.id === seat.id) {
-            setIsPlaying(true);
-        }
-        setState({...state, table: data.table});
+    const handleGameStart = (data) => {
+        console.log(data);
+        setState({
+            ...state,
+            game: data.game,
+            gameIsRunning: true,
+            player: data.game.players[state.currentSeat],
+            board: data.game.players[state.currentSeat].board
+        });
     }
 
     useEffect(() => {
 
-        socket.on('user is ready', data => handleUserReady(data));
+        socket.on('game start', data => handleGameStart(data));
 
     }, [socket]);
-
-    console.log(seat);
-    if (isPlaying) {
+    
+    if (state.gameIsRunning === true) {
         return (
             <div className='UserSeat'>
-                ready!
+                <Board socket={socket} state={state} setState={setState} board={state.board} />
             </div>
         );
     }
@@ -31,7 +35,7 @@ function UserSeat({ socket, seat, state, setState }) {
     {
         return (
             <div className='UserSeat'>
-                <ReadyButton socket={socket} state={state} />
+                <PreGameUserSeat socket={socket} state={state} setState={setState} seat={seat} />
             </div>
         );
     }

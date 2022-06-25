@@ -3,13 +3,11 @@ import './ReadyButton.css';
 
 function ReadyButton({ socket, state }) {
 
-    console.log(state);
-
     const handleReadyClick = () => {
-        console.log('click');
         socket.emit('user is ready', {
             location: state.table,
             user: state.user,
+            seat: state.currentSeat
         })
     }
 

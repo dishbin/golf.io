@@ -1,0 +1,7 @@
+.discard-button {
+    width: 5em;
+    height: 8em;
+    border-radius: 5px;
+    margin: 0.5em;
+    background-color: palevioletred;
+}

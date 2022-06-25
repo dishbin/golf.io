@@ -5,7 +5,9 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     const [tableSeat, setTableSeat] = useState(seat);
 
+
     useEffect(() => {
+        
     }, [socket]);
 
     const joinTable = (socket) => {

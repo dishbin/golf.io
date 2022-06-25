@@ -1,21 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { isValidElement, useEffect, useState } from 'react';
 import Seat from '../seat/Seat';
 import './TableTile.css';
 
 function TableTile({ socket, table, state, setState }) {
 
-    const handlePlayerLeaving = (targetTable, seat, user) => {
-        
+    const [isFull, setIsFull] = useState(false);
+
+    const handleDisconnection = (data) => {
+        console.log('disconnected');
+        console.log(data);
+        console.log(table);
+    }
+
+    const handleFullTable = (data) => {
+        if (data.table.id === table.id) {
+            setIsFull(true);
+        }
+    }
+
+    const handleTableNoLongerFull = (data) => {
+        if (data.table.id === table.id) {
+            setIsFull(false);
+        }
     }
 
     useEffect(() => {
-        socket.on('player left', data => handlePlayerLeaving(data.table, data.seat, data.user));
+        if (table.isFull === true) {
+            setIsFull(true);
+        }
+        socket.on('table is full', data => handleFullTable(data));
+        socket.on('table not full', data => handleTableNoLongerFull(data));
+        socket.on('user disconnected', data => handleDisconnection(data));
+
+        return (() => {
+            socket.off('table is full', handleFullTable);
+            socket.off('table not full', handleTableNoLongerFull);
+            socket.off('user disconnected', handleDisconnection);
+        })
     }, [socket]);
 
 
     return (
-        <div className='TableTile'>
+        <div className='TableTile' style={{backgroundColor: `${(isFull) ? 'gray' : 'white'}`}}>
             <h3 className='table-name'>{table.name}</h3>
+            
             <div>
                 <div className='seat-array'>
                     {Object.entries(table.seats)

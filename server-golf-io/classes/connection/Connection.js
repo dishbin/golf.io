@@ -41,10 +41,21 @@ class Connection {
     }
 
     disconnect () {
-        this.room.users.getAll().delete(this.socket);
-        if (this.location !== 'lobby') {
-            this.rooms.get('lobby').users.getAll().delete(this.socket);
-        }
+
+        this.io.emit('user disconnected', {
+            socketId: this.socket.id
+        });
+
+        // console.log(this.socket.id);
+        
+        // this.rooms.forEach(room => {
+        //     room.users.userDisconnected(this.socket.id);
+        // });
+
+        // this.room.users.userDisconnected(this.socket.id);
+        // if (this.location !== 'lobby') {
+        //     this.rooms.get('lobby').users.userDisconnected(this.socket.id);
+        // }
     }
 }
 

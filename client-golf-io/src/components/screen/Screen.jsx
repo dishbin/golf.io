@@ -4,15 +4,10 @@ import { io } from 'socket.io-client';
 import './Screen.css';
 import TableScreen from '../table-screen/TableScreen';
 
-function Screen({ state, setState }) {
-
-    const [socket, setSocket] = useState(null);
+function Screen({ socket, state, setState }) {
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000');
-        setSocket(newSocket);
-        return () => newSocket.close();
-    }, [setSocket]);
+    }, [socket]);
 
     if (socket && state.table && state.inGame) 
     {

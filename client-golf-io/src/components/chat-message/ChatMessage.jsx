@@ -3,8 +3,6 @@ import './ChatMessage.css';
 
 function ChatMessage({ message }) {
 
-    console.log(message);
-
     const [userHover, setUserHover] = useState(false);
     const [messageHover, setMessageHover] = useState(false);
 

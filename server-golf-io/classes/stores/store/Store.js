@@ -1,7 +1,7 @@
 const uuidv4 = require('uuid').v4;
 
 const { uuid } = require('uuidv4');
-const UserStore = require('../../user-store/UserStore');
+const UserStore = require('../user-store/UserStore');
 const MessageStore = require('../message-store/MessageStore');
 
 class Store {

@@ -4,6 +4,8 @@
 
     box-shadow: 0em 0em 1em black;
     margin: 1em;
+
+
 }
 
 .seat-div {
@@ -17,4 +19,32 @@
     flex-wrap: wrap;
 
     transform: rotate(-45deg);
+}
+
+.other-players-div {
+    height: 20em;
+    width: 90%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin: 1em auto;
+}
+
+.player-div {
+    width: 30%;
+    margin: 1em;
+    height: 5em;
+}
+
+.edge-player {
+    margin-top: 10em;
+}
+
+.center-div {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
 }

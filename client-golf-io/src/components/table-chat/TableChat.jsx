@@ -7,8 +7,6 @@ function TableChat({ socket, state, setState }) {
     const [messages, setMessages] = useState({});
 
     const messageListener = (data) => {
-        console.log(data);
-        console.log(state.table);
         if (data.location === state.table.name) {
             setMessages((prevMessages) => {
                 const newMessages = {...prevMessages};
@@ -18,12 +16,12 @@ function TableChat({ socket, state, setState }) {
         }
     };
 
-    const deleteMessageListener = (messageId) => {
+    const deleteMessageListener = (data) => {
         setMessages((prevMessages) => {
             const newMessages = {...prevMessages};
-            delete newMessages[messageId];
+            delete newMessages[data.message.id];
             return newMessages;
-        })
+        });
     };
 
     useEffect(() => {
@@ -33,7 +31,7 @@ function TableChat({ socket, state, setState }) {
             table: state.table
         });
         socket.on('new message', data => messageListener(data));
-        socket.on('deleteMessage', deleteMessageListener);
+        socket.on('delete message', data => deleteMessageListener(data));
         
         return () => {
             socket.off('table message', messageListener);
