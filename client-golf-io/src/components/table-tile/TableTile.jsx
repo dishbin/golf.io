@@ -49,6 +49,7 @@ function TableTile({ socket, table, state, setState }) {
                     {Object.entries(table.seats)
                         .map(seat => 
                             <Seat 
+                                key={seat[0]}
                                 seatName={seat[0]}
                                 seat={seat[1]}
                                 socket={socket} 

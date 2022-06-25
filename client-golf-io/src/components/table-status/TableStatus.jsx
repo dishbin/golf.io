@@ -13,8 +13,6 @@ function TableStatus({ socket, state, setState, players }) {
         user: 'empty'
     });
 
-    console.log(seats);
-
     const seatingArrangements = {
         A: {
             B: 'left',
