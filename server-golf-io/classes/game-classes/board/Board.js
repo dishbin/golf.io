@@ -15,12 +15,12 @@ class Board {
     ];
 
     constructor (cards) {
-        this.slots = new Map();
+        this.slots = {};
         let count = 0;
         for (let i = 0; i < this.#rows.length; i++) {
             for (let j = 0; j < this.#columns.length; j++) {
                 let slotName = this.#rows[i] + this.#columns[j];
-                this.slots.set(slotName, new Slot(cards[count], this.#rows[i], this.#columns[j]));
+                this.slots[slotName] = new Slot(cards[count], this.#rows[i], this.#columns[j]);
                 count++;
             }
         }

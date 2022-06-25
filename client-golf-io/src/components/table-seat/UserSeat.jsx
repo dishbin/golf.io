@@ -8,7 +8,6 @@ function UserSeat({ socket, seat, state, setState }) {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const handleGameStart = (data) => {
-        console.log(data);
         setState({
             ...state,
             game: data.game,
@@ -23,7 +22,7 @@ function UserSeat({ socket, seat, state, setState }) {
         socket.on('game start', data => handleGameStart(data));
 
     }, [socket]);
-    
+
     if (state.gameIsRunning === true) {
         return (
             <div className='UserSeat'>

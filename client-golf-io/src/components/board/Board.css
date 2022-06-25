@@ -1,0 +1,9 @@
+.Board {
+    background-color: gray;
+    width: 10em;
+    margin: auto;
+    margin-top: -2em;
+
+    display: flex;
+    flex-wrap: wrap;
+}
