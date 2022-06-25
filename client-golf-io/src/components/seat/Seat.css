@@ -1,14 +1,19 @@
 .Seat {
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
     border-radius: 50%;
-    margin: 2em;
+    margin: 1em;
+    box-shadow: 0em 0em 0.5em gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .empty {
-    background-color: blue;
+    background-color: white;
 }
 
 .filled {
-    background-color: red;
+    box-shadow: 0em 0em 1.5em black;
 }

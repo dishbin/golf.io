@@ -21,8 +21,8 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     if (seat !== 'empty') {
         return (
-            <div className='Seat filled'>
-                <p>not empty seat</p>
+            <div className='Seat filled' style={{ backgroundColor: `${state.user.textColor}` }}>
+                {state.user.name}
             </div>
         );
     } else {
@@ -31,7 +31,7 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
                 className='Seat empty'
                 onClick={() => joinTable(socket)}
             >
-                <p>empty seat</p>
+                <p>empty</p>
             </div>
         );
     }

@@ -42,8 +42,7 @@ function TableTile({ socket, table, state, setState }) {
 
     return (
         <div className='TableTile' style={{backgroundColor: `${(isFull) ? 'gray' : 'white'}`}}>
-            <h3 className='table-name'>{table.name}</h3>
-            
+            <h3 className='table-name' style={{color: `${(isFull) ? 'red' : 'gray'}`}}>{table.name}</h3>
             <div>
                 <div className='seat-array'>
                     {Object.entries(table.seats)
