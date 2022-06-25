@@ -43,6 +43,7 @@ class Game {
         this.scores = new GameScore(this.players);
 
         this.discard = new DiscardPile(this.deck);
+        this.discard.put(this.deck.draw());
     }
 
 }

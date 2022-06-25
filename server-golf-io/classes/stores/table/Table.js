@@ -1,6 +1,7 @@
 const uuidv4 = require('uuid').v4;
 
 const Game = require('../../game-classes/game/Game');
+const NPC = require('../../game-classes/NPC/NPC');
 const Store = require("../store/Store");
 
 class Table extends Store {
@@ -38,6 +39,25 @@ class Table extends Store {
         this.checkForAllReady();
     }
 
+    userPlayAnyway (data) {
+        console.log('playing anyway');
+        console.log(data);
+        this.seats[data.seat] = {
+            ...this.seats[data.seat],
+            readyToPlayAnyway: true
+        }
+        return this.checkForPlayAnyway();
+    }
+
+    checkForPlayAnyway () {
+        console.log('checking for play anyway');
+        if (Object.values(this.seats).every(seat => seat === 'empty' || seat.readyToPlayAnyway !== undefined || seat.readyToPlayAnyway === true)) {
+            this.populateNPCs();
+            return true;
+        }
+        return false;
+    }
+
     checkForFull () {
         if (Object.values(this.seats).every(val => val !== 'empty')) {
             this.isFull = true;
@@ -52,6 +72,17 @@ class Table extends Store {
         } else {
             this.isAllReady = false;
         }
+    }
+
+    populateNPCs () {
+        console.log('populating NPCs');
+        let seats = {...this.seats};
+        for (let seat in seats) {
+            if (seats[seat] === 'empty') {
+                seats[seat] = new NPC();
+            }
+        }
+        this.seats = seats;
     }
 
     startGame () {

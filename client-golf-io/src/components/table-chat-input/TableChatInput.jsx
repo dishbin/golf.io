@@ -23,7 +23,7 @@ function TableChatInput({ socket, state, setState, table }) {
                     className='text-input'
                     autoFocus
                     value={value}
-                    placeholder={`'say to ${state.table.name}`}
+                    placeholder={`say something to the ${state.table.name} table`}
                     onChange={(e) => {
                         setValue(e.currentTarget.value);
                     }}

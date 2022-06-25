@@ -16,22 +16,34 @@ function TableView({ socket, state, setState }) {
         A: {
             B: 'left',
             D: 'center',
-            C: 'right'
+            C: 'right',
+            left: 'B',
+            center: 'D',
+            right: 'C'
         },
         B: {
             D: 'left',
             C: 'center',
-            A: 'right'
+            A: 'right',
+            left: 'D',
+            center: 'C',
+            right: 'A'
         },
         C: {
             A: 'left',
             B: 'center',
-            D: 'right'
+            D: 'right',
+            left: 'A',
+            center: 'B',
+            right: 'D'
         },
         D: {
             C: 'left',
             A: 'center',
-            B: 'right'
+            B: 'right',
+            left: 'C',
+            center: 'A',
+            right: 'B'
         }
     };
 
@@ -86,13 +98,13 @@ function TableView({ socket, state, setState }) {
             <div className='top-layer'>
                 <div className='other-players-div'>
                     <div className='player-div edge-player'>
-                        <OtherPlayerSeat key='left-player' player={players.left}/>
+                        <OtherPlayerSeat key='left-player' socket={socket} state={state} setState={setState} player={players.left} position={seatingArrangements[state.currentSeat]['left']}/>
                     </div>
-                    <div className='player-div center-div'>
-                        <OtherPlayerSeat key='center-player' player={players.center}/>
+                    <div className='player-div'>
+                        <OtherPlayerSeat key='center-player' socket={socket} state={state} setState={setState} player={players.center} position={seatingArrangements[state.currentSeat]['center']}/>
                     </div>
                     <div className='player-div edge-player'>
-                        <OtherPlayerSeat key='right-player' player={players.right}/>
+                        <OtherPlayerSeat key='right-player' socket={socket} state={state} setState={setState} player={players.right} position={seatingArrangements[state.currentSeat]['right']}/>
                     </div>
                 </div>
                 <TableStatus socket={socket} state={state} setState={setState} players={players}/>

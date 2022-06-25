@@ -1,34 +1,21 @@
 .Slot {
     width: 2em;
     height: 3em;
-    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 0em 0em 0.25em black;
     margin: 0.5em;
+    background-color: white;
 }
 
 .suit {
-    width: 13px;
-    height: 13px;
     margin-left: 0.1em;
-    padding: none;
-    background-repeat: no-repeat;
+    margin-top: 0.35em;
 }
 
-.spades {
-    background-image: url('./spade.png');
-}
-
-.clubs {
-    background-image: url('./clubs.png');
-}
-
-.diamonds {
-    background-image: url('./diamonds.png');
-}
-
-.hearts {
-    background-image: url('./hearts.png');
-}
-
-.joker {
-    background-image: url('./joker.png');
+.face-down {
+    width: 1.35em;
+    height: 2.375em;
+    background-color: rgb(19, 19, 47);
+    border: 5px solid white;
+    border-style: inset;
 }

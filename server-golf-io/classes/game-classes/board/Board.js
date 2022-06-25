@@ -24,6 +24,14 @@ class Board {
                 count++;
             }
         }
+        let flipCount = 0;
+        while (flipCount < 2) {
+            let slot = this.slots[this.#rows[Math.floor(Math.random() * 3)] + this.#columns[Math.floor(Math.random() * 3)]];
+            if (slot.isFaceUp === false) {
+                this.slots[slot.name].flipUp();
+                flipCount++;
+            }
+        }
     }
 }
 

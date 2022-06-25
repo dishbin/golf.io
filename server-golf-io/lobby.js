@@ -5,9 +5,14 @@ const getTextColor = require('./classes/utils/getTextColor');
 const lobbyMessages = new Set();
 const users = new Map();
 const tables = new Map();
+const defaultTableNames = [
+    'amethyst',
+    'ruby',
+    'opal',
+    'sapphire'
+]
 for (let i = 0; i < 4; i++) {
-    let tbl = new Table('table' + (i + 1));
-    tbl.name = 'table' + (i + 1);
+    let tbl = new Table(defaultTableNames[i]);
     tables.set(tbl.id, tbl);
 }
 

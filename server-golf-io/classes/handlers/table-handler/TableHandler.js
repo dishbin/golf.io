@@ -13,6 +13,8 @@ class TableHandler {
         socket.on('user is ready', data => this.handleUserReady(data));
         socket.on('get ready users', data => this.handleAllReadyUsers(data));
 
+        socket.on('play anyway', data => this.handlePlayAnyway(data));
+
         socket.on('get players', data => this.handleGetPlayers(data));
 
     }
@@ -54,6 +56,33 @@ class TableHandler {
             seats: this.rooms.get(data.location.name).seats,
             location: this.rooms.get(data.location.name)
         });
+    }
+
+    handlePlayAnyway (data) {
+        let playAnyway = this.rooms.get(data.location.name).userPlayAnyway(data);
+        if (playAnyway === true) {
+            this.rooms.get(data.location.name).startGame();
+            this.io.to(data.location.name).emit('game start', {
+                table: this.rooms.get(data.location.name),
+                game: this.rooms.get(data.location.name).game
+            });
+            this.io.to(data.location.name).emit('all players', {
+                players: this.rooms.get(data.location.name).game.players,
+                table: this.rooms.get(data.location.name),
+                location: this.rooms.get(data.location.name)
+            });
+            let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
+            console.log(currentPlayer);
+            setTimeout(() => {
+                this.io.to(currentPlayer.socketId).emit('your turn', {
+                    location: this.rooms.get(data.location.name),
+                    table: this.rooms.get(data.location.name),
+                    game: this.rooms.get(data.location.name).game,
+                    player: currentPlayer
+                });
+            }, 1000);
+            
+        }
     }
 
     sendPlayer (data) {

@@ -1,5 +1,10 @@
 import React from 'react';
 import './Slot.css';
+import spadeImg from './suit-imgs/spade.png';
+import clubImg from './suit-imgs/clubs.png';
+import heartImg from './suit-imgs/hearts.png';
+import diamondImg from './suit-imgs/diamonds.png';
+import jokerImg from './suit-imgs/joker.png';
 
 function Slot({ socket, state, setState, slot, slotName }) {
     
@@ -20,12 +25,33 @@ function Slot({ socket, state, setState, slot, slotName }) {
         'joker': ''
     }
 
+    let suitImgs = {
+        spades: spadeImg,
+        clubs: clubImg,
+        hearts: heartImg,
+        diamonds: diamondImg,
+        joker: jokerImg
+    }
 
-    return (
-        <div className='Slot'>
-            <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}<div className={`${slot.card.suit} suit`}></div></span>
-        </div>
-    );
+
+    if (slot.isFaceUp) {
+        return (
+            <div className='Slot'>
+                <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}</span><img className='suit' src={suitImgs[slot.card.suit]}></img>
+            </div>
+        );
+    }
+    else 
+    {
+        return (
+            <div className='Slot face-down'>
+                <div className='face-down-border'>
+                    <div className='face-down-back'></div>
+                </div>
+            </div>
+        ); 
+    }
+    
 }
 
 export default Slot;

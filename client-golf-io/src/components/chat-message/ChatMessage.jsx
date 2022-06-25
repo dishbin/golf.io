@@ -3,6 +3,8 @@ import './ChatMessage.css';
 
 function ChatMessage({ message }) {
 
+    console.log(message);
+
     const [userHover, setUserHover] = useState(false);
     const [messageHover, setMessageHover] = useState(false);
 
@@ -17,10 +19,10 @@ function ChatMessage({ message }) {
                     style={(message.user) ? { color: message.user.textColor} : {color: 'white'}}
                 >
                     {(message.user) ? message.user.name : 'anon'}
-                </span>: <span 
+                </span><span 
                     className='message'
                 >
-                    {message.value}
+                     {`: ${message.value}`}
                 </span>
             </div>
         );
