@@ -37,7 +37,7 @@ function Slot({ socket, state, setState, slot, slotName }) {
     if (slot.isFaceUp) {
         return (
             <div className='Slot'>
-                <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}<img className='suit' src={suitImgs[slot.card.suit]}></img></span>
+                <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}</span><img className='suit' src={suitImgs[slot.card.suit]}></img>
             </div>
         );
     }

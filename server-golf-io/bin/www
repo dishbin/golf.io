@@ -32,10 +32,10 @@ var io = socketio(server, {
 });
 const rooms = new Map();
 rooms.set('lobby', new Store('lobby'));
-rooms.set('table1', new Table('table1'));
-rooms.set('table2', new Table('table2'));
-rooms.set('table3', new Table('table3'));
-rooms.set('table4', new Table('table4'));
+rooms.set('amethyst', new Table('amethyst'));
+rooms.set('ruby', new Table('ruby'));
+rooms.set('opal', new Table('opal'));
+rooms.set('sapphire', new Table('sapphire'));
 join(io, rooms);
 
 /**

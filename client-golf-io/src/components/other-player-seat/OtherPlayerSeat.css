@@ -1,10 +1,20 @@
 .OtherPlayerSeat {
-    width: 5em;
+    width: 10em;
     height: 5em;
-    margin: 6em;
-    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0em 0em 1em black;
 
-    transform: rotate(45deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    background-color: gold;
+.NPC {
+    background-color: gray;
+}
+
+.empty {
+    width: 5em;
+    height: 2.5em;
 }

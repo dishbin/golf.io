@@ -8,9 +8,8 @@
 }
 
 .suit {
-    width: 13px;
-    height: 13px;
     margin-left: 0.1em;
+    margin-top: 0.35em;
 }
 
 .face-down {
