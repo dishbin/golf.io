@@ -1,8 +1,10 @@
 .Slot {
     width: 2em;
     height: 3em;
-    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 0em 0em 0.25em black;
     margin: 0.5em;
+    background-color: white;
 }
 
 .suit {
@@ -12,5 +14,9 @@
 }
 
 .face-down {
-
+    width: 1.35em;
+    height: 2.375em;
+    background-color: rgb(19, 19, 47);
+    border: 5px solid white;
+    border-style: inset;
 }

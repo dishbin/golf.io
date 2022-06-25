@@ -1,6 +1,10 @@
 import React from 'react';
 import './Slot.css';
 import spadeImg from './suit-imgs/spade.png';
+import clubImg from './suit-imgs/clubs.png';
+import heartImg from './suit-imgs/hearts.png';
+import diamondImg from './suit-imgs/diamonds.png';
+import jokerImg from './suit-imgs/joker.png';
 
 function Slot({ socket, state, setState, slot, slotName }) {
     
@@ -22,7 +26,11 @@ function Slot({ socket, state, setState, slot, slotName }) {
     }
 
     let suitImgs = {
-        spade: spadeImg
+        spades: spadeImg,
+        clubs: clubImg,
+        hearts: heartImg,
+        diamonds: diamondImg,
+        joker: jokerImg
     }
 
 
@@ -37,7 +45,9 @@ function Slot({ socket, state, setState, slot, slotName }) {
     {
         return (
             <div className='Slot face-down'>
-
+                <div className='face-down-border'>
+                    <div className='face-down-back'></div>
+                </div>
             </div>
         ); 
     }

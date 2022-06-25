@@ -31,17 +31,19 @@ function Board({ socket, state, setState, board }) {
     }, [socket]);
     
     return (
-        <div className='Board'>
-            {(slots !== null) &&
-                Object.values(slots).map(slot => <Slot 
-                    socket={socket}
-                    state={state}
-                    setState={setState}
-                    slot={slot}
-                    slotName={slot.slotName}
-                    key={slot.slotName}
-                />)
-            }
+        <div className='mat-div'>
+            <div className='Board'>
+                {(slots !== null) &&
+                    Object.values(slots).map(slot => <Slot 
+                        socket={socket}
+                        state={state}
+                        setState={setState}
+                        slot={slot}
+                        slotName={slot.slotName}
+                        key={slot.slotName}
+                    />)
+                }
+            </div>
         </div>
     );
 }
