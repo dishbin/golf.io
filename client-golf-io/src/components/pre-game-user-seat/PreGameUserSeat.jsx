@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PlayAnywayButton from '../play-anyway-button/PlayAnywayButton';
 import ReadyButton from '../ready-button/ReadyButton';
 
 function PreGameUserSeat({ socket, state, setState, seat }) {
@@ -19,7 +20,7 @@ function PreGameUserSeat({ socket, state, setState, seat }) {
     if (isReady) {
         return (
             <div className='UserSeat'>
-                ready!
+                <PlayAnywayButton socket={socket} state={state} />
             </div>
         );
     }
