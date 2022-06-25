@@ -28,10 +28,9 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
     } else {
         return (
             <div 
-                className='Seat empty'
+                className='Seat'
                 onClick={() => joinTable(socket)}
             >
-                <p>empty</p>
             </div>
         );
     }

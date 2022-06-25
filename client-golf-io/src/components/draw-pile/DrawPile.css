@@ -1,6 +1,10 @@
 .DrawPile {
     width: 3em;
     margin: 1em;
+    margin-left: 0em;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
 }
 
 .deck-button {

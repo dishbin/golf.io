@@ -88,7 +88,7 @@ function TableView({ socket, state, setState }) {
                     <div className='player-div edge-player'>
                         <OtherPlayerSeat key='left-player' player={players.left}/>
                     </div>
-                    <div className='player-div center-div'>
+                    <div className='player-div'>
                         <OtherPlayerSeat key='center-player' player={players.center}/>
                     </div>
                     <div className='player-div edge-player'>

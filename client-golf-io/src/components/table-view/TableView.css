@@ -35,15 +35,12 @@
     width: 30%;
     margin: 1em;
     height: 5em;
-}
-
-.edge-player {
-    margin-top: 10em;
-}
-
-.center-div {
     display: flex;
     flex-direction: column;
 
     align-items: center;
+}
+
+.edge-player {
+    margin-top: 10em;
 }

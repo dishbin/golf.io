@@ -8,9 +8,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.empty {
     background-color: white;
 }
 
