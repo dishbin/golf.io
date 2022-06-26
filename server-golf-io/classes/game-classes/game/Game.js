@@ -36,6 +36,9 @@ class Game {
                 board: new Board(this.deck.drawBoard()),
                 scores: new Scorecard()
             };
+            if (newPlayer.playerType === undefined) {
+                newPlayer.playerType = 'player'
+            }
             players[seat[0]] = newPlayer;
         });
         this.players = players;

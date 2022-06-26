@@ -1,8 +1,9 @@
 .OtherPlayerSeat {
-    width: 10em;
+    width: 7.5em;
     height: 5em;
     border-radius: 10px;
     box-shadow: 0em 0em 1em black;
+    margin-top: 2.5em;
 
     display: flex;
     flex-direction: column;
@@ -17,5 +18,4 @@
 .empty {
     width: 5em;
     height: 2.5em;
-    margin-top: 2.5em;
 }

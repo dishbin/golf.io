@@ -56,10 +56,17 @@ function TableView({ socket, state, setState }) {
     }
 
     const handlePlayers = (data) => {
+        console.log(data);
         if (state.table.name === data.table.name) {
             let seats = seatingArrangements[state.currentSeat];
             let newPlayers = {...players};
-            data.players.forEach(player => {
+            let dataPlayers;
+            if (Array.isArray(data.players)) {
+                dataPlayers = data.players;
+            } else {
+                dataPlayers = Object.entries(data.players)
+            }
+            dataPlayers.forEach(player => {
                 let position = seats[player[0]];
                 if (position === undefined) {
                     position = 'user';

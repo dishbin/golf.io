@@ -8,8 +8,6 @@ import jokerImg from './suit-imgs/joker.png';
 
 function DiscardPile({ socket, state, setState, discard, setDiscard }) {
 
-    console.log(discard);
-
     let values = {
         'ace': 'A',
         'two': '2',

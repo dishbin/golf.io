@@ -66,6 +66,11 @@ class TableHandler {
                 table: this.rooms.get(data.location.name),
                 game: this.rooms.get(data.location.name).game
             });
+            this.io.to(data.location.name).emit('update players', {
+                players: this.rooms.get(data.location.name).game.players,
+                table: this.rooms.get(data.location.name),
+                location: this.rooms.get(data.location.name)
+            });
             this.io.to(data.location.name).emit('all players', {
                 players: this.rooms.get(data.location.name).game.players,
                 table: this.rooms.get(data.location.name),

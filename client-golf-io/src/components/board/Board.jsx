@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import InitialChoice from '../initial-choice/InitialChoice';
 import Slot from '../slot/Slot';
 import './Board.css';
 
@@ -6,18 +7,19 @@ function Board({ socket, state, setState, board }) {
     
     const [slots, setSlots] = useState(null);
 
+    const [isMyTurn, setIsMyTurn] = useState(false);
+
+    const [turnPhase, setTurnPhase] = useState('none');
+
     const handlePlayerBoard = (data) => {
-        console.log('player board');
-        console.log(data);
-        console.log(state);
         if (data.table.name === state.table.name && data.location === state.user.socketId) {
-            console.log('setting data >>>>>>>>>');
             setSlots({...data.board.slots});
         }
     }
 
     const handleTurn = (data) => {
-        console.log('it\'s your turn');
+        setTurnPhase('initial choice');
+        setIsMyTurn(true);
     }
 
     useEffect(() => {
@@ -30,6 +32,8 @@ function Board({ socket, state, setState, board }) {
             player: state.game.players[state.currentSeat],
             user: state.user
         });
+        if (isMyTurn) {
+        }
         return (() => {
             socket.off('player board', handlePlayerBoard);
         });
@@ -37,6 +41,9 @@ function Board({ socket, state, setState, board }) {
     
     return (
         <div className='mat-div'>
+            {(isMyTurn && turnPhase === 'initial choice') && 
+                <InitialChoice socket={socket} state={state} setState={setState} />
+            }
             <div className='Board'>
                 {(slots !== null) &&
                     Object.values(slots).map(slot => <Slot 
