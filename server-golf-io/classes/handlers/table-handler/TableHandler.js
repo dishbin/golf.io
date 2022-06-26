@@ -42,6 +42,15 @@ class TableHandler {
                 table: this.rooms.get(data.location.name),
                 game: this.rooms.get(data.location.name).game
             });
+            let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
+            setTimeout(() => {
+                this.io.to(currentPlayer.socketId).emit('your turn', {
+                    location: this.rooms.get(data.location.name),
+                    table: this.rooms.get(data.location.name),
+                    game: this.rooms.get(data.location.name).game,
+                    player: currentPlayer
+                });
+            }, 1000);
         } else {
             this.io.to(data.location.name).emit('user is ready', {
                 table: this.rooms.get(data.location.name),
@@ -66,26 +75,31 @@ class TableHandler {
                 table: this.rooms.get(data.location.name),
                 game: this.rooms.get(data.location.name).game
             });
-            this.io.to(data.location.name).emit('update players', {
-                players: this.rooms.get(data.location.name).game.players,
-                table: this.rooms.get(data.location.name),
-                location: this.rooms.get(data.location.name)
-            });
+            // this.io.to(data.location.name).emit('update players', {
+            //    players: this.rooms.get(data.location.name).game.players,
+            //    table: this.rooms.get(data.location.name),
+            //    location: this.rooms.get(data.location.name)
+            // });
             this.io.to(data.location.name).emit('all players', {
                 players: this.rooms.get(data.location.name).game.players,
                 table: this.rooms.get(data.location.name),
                 location: this.rooms.get(data.location.name)
             });
             let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
-            console.log(currentPlayer);
-            setTimeout(() => {
-                this.io.to(currentPlayer.socketId).emit('your turn', {
-                    location: this.rooms.get(data.location.name),
-                    table: this.rooms.get(data.location.name),
-                    game: this.rooms.get(data.location.name).game,
-                    player: currentPlayer
-                });
-            }, 1000);
+            if (currentPlayer.playerType === 'NPC') {
+                console.log('NPC turn');
+                console.log(currentPlayer);
+            } else {
+                setTimeout(() => {
+                    this.io.to(currentPlayer.socketId).emit('your turn', {
+                        location: this.rooms.get(data.location.name),
+                        table: this.rooms.get(data.location.name),
+                        game: this.rooms.get(data.location.name).game,
+                        player: currentPlayer
+                    });
+                }, 1000);
+            }
+            
             
         }
     }

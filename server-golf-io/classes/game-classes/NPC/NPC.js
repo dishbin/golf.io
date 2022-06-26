@@ -6,6 +6,20 @@ class NPC {
         this.name = 'NPC-' + this.id;
         this.playerType = 'NPC';
     }
+
+    assignBoard (data) {
+        this.board = data;
+    }
+
+    assignScorecard (data) {
+        this.scorecard = data;
+    }
+
+    handleTurnStart (data) {
+        console.log('NPC TURN STARTING');
+        console.log(data);
+        console.log(this);
+    }
 }
 
 module.exports = NPC;

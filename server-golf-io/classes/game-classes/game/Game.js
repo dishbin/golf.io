@@ -31,15 +31,19 @@ class Game {
 
         let players = {};
         Object.entries(seats).forEach(seat => {
-            let newPlayer = {
-                ...seat[1],
-                board: new Board(this.deck.drawBoard()),
-                scores: new Scorecard()
-            };
-            if (newPlayer.playerType === undefined) {
-                newPlayer.playerType = 'player'
+            if (seat[1].playerType === undefined) {
+                let newPlayer = {
+                    ...seat[1],
+                    board: new Board(this.deck.drawBoard()),
+                    scores: new Scorecard(),
+                    playerType: 'player'
+                }
+                players[seat[0]] = newPlayer;
+            } else if (seat[1].playerType === 'NPC') {
+                seat[1].assignBoard(new Board(this.deck.drawBoard()));
+                seat[1].assignScorecard(new Scorecard());
+                players[seat[0]] = seat[1];
             }
-            players[seat[0]] = newPlayer;
         });
         this.players = players;
 

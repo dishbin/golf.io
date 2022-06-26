@@ -27,7 +27,6 @@ class GameHandler {
 
     handleStartPlayerTurn (data) {
         let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
-        console.log(currentPlayer);
     }
 }
 
