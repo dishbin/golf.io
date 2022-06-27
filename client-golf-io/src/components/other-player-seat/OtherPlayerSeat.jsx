@@ -22,7 +22,7 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
     }
 
     const handlePlayerTurn = (data) => {
-        if (data.player.currentTurn === position) {
+        if (data.currentTurn === position) {
             setIsThisPlayersTurn(true);
         } else {
             setIsThisPlayersTurn(false);
