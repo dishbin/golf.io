@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import './ChatMessage.css';
 
-function ChatMessage({ message }) {
+function ChatMessage({ state, message }) {
 
     const [userHover, setUserHover] = useState(false);
     const [messageHover, setMessageHover] = useState(false);
+
+    if (message.type !== undefined && message.type === 'turn notifier') {
+        if (message.player.id === state.user.id) {
+            message.value = 'it\'s your turn. Draw a card from the deck, pick a card up from the discard, or flip a card over on your board.'
+        }
+    }
 
     if (message.user !== 'server') {
         return (

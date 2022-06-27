@@ -46,7 +46,7 @@ function TableChat({ socket, state, setState }) {
                 .sort((a,b) => a.time - b.time)
                 .map((message) => {
                     return (
-                        <ChatMessage key={message.id} message={message} />
+                        <ChatMessage key={message.id} message={message} state={state}/>
                     )
                 })
                 

@@ -43,7 +43,7 @@ function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, 
                 location: state.table,
                 table: state.table,
                 seat: state.currentSeat,
-                choiceType: 'board choice'
+                choiceType: 'board flip'
             });
             if (turnPhase === 'initial choice') {
                 setTurnPhase('none');
