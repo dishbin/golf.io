@@ -5,8 +5,6 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     const [tableSeat, setTableSeat] = useState(seat);
 
-    console.log(seat);
-
     useEffect(() => {
     }, [socket]);
 

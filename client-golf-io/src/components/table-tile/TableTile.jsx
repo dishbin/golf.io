@@ -4,8 +4,6 @@ import './TableTile.css';
 
 function TableTile({ socket, table, state, setState }) {
 
-    console.log(table);
-
     const [isFull, setIsFull] = useState(false);
 
     const handleDisconnection = (data) => {
