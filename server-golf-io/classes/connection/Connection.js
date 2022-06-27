@@ -9,6 +9,7 @@ const UserMovementHandler = require('../handlers/user-movement-handler/UserMovem
 const GameHandler = require('../handlers/game-handler/GameHandler');
 const PlayerTurnHandler = require('../handlers/player-turn-handler/PlayerTurnHandler');
 const ScoringHandler = require('../handlers/scoring-handler/ScoringHandler');
+const AIHandler = require('../handlers/ai-handler/AIHandler');
 
 class Connection {
     constructor (io, socket, rooms) {
@@ -30,6 +31,7 @@ class Connection {
         const gameHandler = new GameHandler(this.io, this.socket, this.rooms);
         const playerTurnHandler = new PlayerTurnHandler(this.io, this.socket, this.rooms);
         const scoringHandler = new ScoringHandler(this.io, this.socket, this.rooms);
+        const aiHandler = new AIHandler(this.io, this.socket, this.rooms);
 
 
         // *************************

@@ -82,7 +82,7 @@ class TableHandler {
                 table: this.rooms.get(data.location.name),
                 location: this.rooms.get(data.location.name)
             });
-
+            
             this.handleFirstTurn(data);
         }
     }
