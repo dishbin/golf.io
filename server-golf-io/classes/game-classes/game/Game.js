@@ -60,10 +60,11 @@ class Game {
         return this.currentTurn;
     }
 
-    removePlayer (data) {
-        console.log('REMOVING PLAYER');
-        console.log(data);
+    startNextPlayerTurn () {
+        return this.players[this.playerTurn()];
+    }
 
+    removePlayer (data) {
         let playerToRemove = Object.entries(this.players)
                                 .filter(player => player[1].socketId === data)[0];
         let npc = new NPC();

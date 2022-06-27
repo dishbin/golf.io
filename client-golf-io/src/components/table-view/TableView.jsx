@@ -56,7 +56,6 @@ function TableView({ socket, state, setState }) {
     }
 
     const handlePlayers = (data) => {
-        console.log(data);
         if (state.table.name === data.table.name) {
             let seats = seatingArrangements[state.currentSeat];
             let newPlayers = {...players};
@@ -87,8 +86,6 @@ function TableView({ socket, state, setState }) {
     }
 
     const handlePlayerTurn = (data) => {
-        console.log('handling turn');
-        console.log(data);
         if (state.table.name === data.table.name) {
             handlePlayers({
                 players: data.players,

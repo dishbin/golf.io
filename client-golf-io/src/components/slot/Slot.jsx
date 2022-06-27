@@ -36,14 +36,14 @@ function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, 
     const handleSlotChoice = (e) => {
         if (isMyTurn) {
             console.log('emitting slot choice!');
-            socket.emit('slot choice', {
+            socket.emit('player choice', {
                 slot: slot,
                 user: state.user,
                 player: state.player,
                 location: state.table,
                 table: state.table,
                 seat: state.currentSeat,
-                choiceType: 'board flip'
+                choiceType: 'initial board flip'
             });
             if (turnPhase === 'initial choice') {
                 setTurnPhase('none');
