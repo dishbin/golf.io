@@ -31,12 +31,20 @@ class Game {
 
         let players = {};
         Object.entries(seats).forEach(seat => {
-            let newPlayer = {
-                ...seat[1],
-                board: new Board(this.deck.drawBoard()),
-                scores: new Scorecard()
-            };
-            players[seat[0]] = newPlayer;
+            if (seat[1].playerType === undefined) {
+                let newPlayer = {
+                    ...seat[1],
+                    board: new Board(this.deck.drawBoard()),
+                    scores: new Scorecard(),
+                    playerType: 'player'
+                }
+                players[seat[0]] = newPlayer;
+            } else if (seat[1].playerType === 'NPC') {
+                seat[1].assignBoard(new Board(this.deck.drawBoard()));
+                seat[1].assignScorecard(new Scorecard());
+                seat[1].assignSeat(seat[0]);
+                players[seat[0]] = seat[1];
+            }
         });
         this.players = players;
 
@@ -44,6 +52,11 @@ class Game {
 
         this.discard = new DiscardPile(this.deck);
         this.discard.put(this.deck.draw());
+    }
+
+    playerTurn () {
+        this.incrementTurn();
+        return this.currentTurn;
     }
 
 }

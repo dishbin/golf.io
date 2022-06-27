@@ -40,7 +40,6 @@ class Table extends Store {
     }
 
     userPlayAnyway (data) {
-        console.log('playing anyway');
         console.log(data);
         this.seats[data.seat] = {
             ...this.seats[data.seat],
@@ -50,7 +49,6 @@ class Table extends Store {
     }
 
     checkForPlayAnyway () {
-        console.log('checking for play anyway');
         if (Object.values(this.seats).every(seat => seat === 'empty' || seat.readyToPlayAnyway !== undefined || seat.readyToPlayAnyway === true)) {
             this.populateNPCs();
             return true;
@@ -75,7 +73,6 @@ class Table extends Store {
     }
 
     populateNPCs () {
-        console.log('populating NPCs');
         let seats = {...this.seats};
         for (let seat in seats) {
             if (seats[seat] === 'empty') {

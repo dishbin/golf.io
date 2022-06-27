@@ -7,6 +7,7 @@ function TableChat({ socket, state, setState }) {
     const [messages, setMessages] = useState({});
 
     const messageListener = (data) => {
+        console.log(data);
         if (data.location === state.table.name) {
             setMessages((prevMessages) => {
                 const newMessages = {...prevMessages};
