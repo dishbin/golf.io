@@ -77,6 +77,13 @@ class Game {
         }
     }
 
+    getCurrentPlayer() {
+        return {
+            player: this.players[this.currentTurn],
+            currentTurn: this.currentTurn
+        }
+    }
+
 }
 
 module.exports = Game;

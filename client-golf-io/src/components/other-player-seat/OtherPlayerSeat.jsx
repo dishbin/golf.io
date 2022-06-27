@@ -7,6 +7,8 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
     const [playing, setPlaying] = useState(false);
     const [seatedPlayer, setSeatedPlayer] = useState(null);
 
+    const [isThisPlayersTurn, setIsThisPlayersTurn] = useState(false);
+
     // const handlePlayerBoard = (data) => {
     //     if (data.table.name === state.table.name && data.player.id === seatedPlayer.id) {
     //         setSeatedPlayer(data.player);
@@ -19,7 +21,16 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
         }
     }
 
+    const handlePlayerTurn = (data) => {
+        if (data.player.currentTurn === position) {
+            setIsThisPlayersTurn(true);
+        } else {
+            setIsThisPlayersTurn(false);
+        }
+    }
+
     useEffect(() => {
+        socket.on('player turn', data => handlePlayerTurn(data));
         socket.on('player flipped card', data => handlePlayerFlippingCard(data));
         // socket.on('player board', data => handlePlayerBoard(data));
     }, [socket]);
@@ -34,7 +45,7 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
         else if (player.playerType === 'NPC')
         {
             return (
-                <div className='OtherPlayerSeat NPC'>
+                <div className={`OtherPlayerSeat NPC ${(isThisPlayersTurn) ? 'is-this-players-turn' : ''}`}>
                     <p className='player-name'>NPC</p>
                     {(player.board) &&
                         <OtherPlayerBoard board={player.board} player={player} />
@@ -45,7 +56,7 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
         else if (player.playerType === 'player' || player.playerType === undefined)
         {
             return (
-                <div className='OtherPlayerSeat' style={{ backgroundColor: player.textColor }}>
+                <div className={`OtherPlayerSeat ${(isThisPlayersTurn) ? 'is-this-players-turn' : ''}`} style={{ backgroundColor: player.textColor }}>
                     <p className='player-name'>{player.name}</p>
                     {(player.board) &&
                         <OtherPlayerBoard board={player.board} player={player} />

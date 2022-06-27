@@ -31,3 +31,7 @@
     border-radius: 15px;
     box-shadow: 0em 0em 1em black;
 }
+
+.is-my-turn {
+    box-shadow: 0em 0em 1em yellow;
+}

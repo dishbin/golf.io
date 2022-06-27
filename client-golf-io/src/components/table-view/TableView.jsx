@@ -86,11 +86,33 @@ function TableView({ socket, state, setState }) {
         }
     }
 
+    const handlePlayerTurn = (data) => {
+        console.log('handling turn');
+        console.log(data);
+        if (state.table.name === data.table.name) {
+            handlePlayers({
+                players: data.players,
+                table: data.table
+            });
+        }
+    }
+
+    const handleUpdateBoard = (data) => {
+        if (state.table.name === data.table.name) {
+            handlePlayers({
+                players: data.players,
+                table: data.table
+            });
+        }
+    }
+
     useEffect(() => {
 
         socket.on('user seating', data => handleUserSeating(data));
         socket.on('all players', data => handlePlayers(data));
         socket.on('user disconnected', data => handleDisconnection(data));
+        socket.on('player turn', data => handlePlayerTurn(data));
+        socket.on('update boards', data => handleUpdateBoard(data));
 
         socket.emit('get players', {
             location: state.table,

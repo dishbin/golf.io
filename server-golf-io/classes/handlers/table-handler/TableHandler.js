@@ -85,28 +85,127 @@ class TableHandler {
                 table: this.rooms.get(data.location.name),
                 location: this.rooms.get(data.location.name)
             });
-            let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
-            if (currentPlayer.playerType === 'NPC') {
+            
+            let currentPlayer = this.rooms.get(data.location.name).game.getCurrentPlayer();
+
+            this.io.to(data.location.name).emit('player turn', {
+                player: currentPlayer,
+                players: this.rooms.get(data.location.name).game.players,
+                table: this.rooms.get(data.location.name)
+            });
+
+            if (currentPlayer.player.playerType === 'NPC') {
                 this.io.to(data.location.name).emit('new message', {
                     location: data.location.name,
                     message: {
                         id: uuidv4(),
-                        value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                        value: 'it\'s ' + currentPlayer.player.name + '\'s turn',
                         user: 'server',
-                        player: currentPlayer,
+                        player: currentPlayer.player,
                         type: 'turn notifier'
                     }
                 });
-                let npcTurn = currentPlayer.startTurn({
+                let npcTurn = currentPlayer.player.startTurn({
                     game: this.rooms.get(data.location.name).game
                 });
                 let nextTurn;
                 setTimeout(() => {
                     nextTurn = this.rooms.get(data.location.name).game.playerTurn();
-                    if (this.rooms.get(data.location.name).game.players[nextTurn].playerType === 'NPC') {
-                        console.log('another NPC');
+                    currentPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                    this.io.to(data.location.name).emit('player turn', {
+                        player: currentPlayer,
+                        players: this.rooms.get(data.location.name).game.players,
+                        table: this.rooms.get(data.location.name)
+                    });
+                    if (currentPlayer.playerType === 'NPC') {
+                        setTimeout(() => {
+                            this.io.to(data.location.name).emit('new message', {
+                                location: data.location.name,
+                                message: {
+                                    id: uuidv4(),
+                                    value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                                    user: 'server',
+                                    player: currentPlayer,
+                                    type: 'turn notifier'
+                                }
+                            });
+                            let npcTurn = currentPlayer.startTurn({
+                                game: this.rooms.get(data.location.name).game
+                            });
+                            let anotherNextTurn;
+                            setTimeout(() => {
+                                anotherNextTurn = this.rooms.get(data.location.name).game.playerTurn();
+                                currentPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                                this.io.to(data.location.name).emit('player turn', {
+                                    player: currentPlayer,
+                                    players: this.rooms.get(data.location.name).game.players,
+                                    table: this.rooms.get(data.location.name)
+                                });
+                                if (currentPlayer.playerType === 'NPC') {
+                                    setTimeout(() => {
+                                        this.io.to(data.location.name).emit('new message', {
+                                            location: data.location.name,
+                                            message: {
+                                                id: uuidv4(),
+                                                value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                                                user: 'server',
+                                                player: currentPlayer,
+                                                type: 'turn notifier'
+                                            }
+                                        });
+                                        let npcTurn = currentPlayer.startTurn({
+                                            game: this.rooms.get(data.location.name).game
+                                        });
+                                        let theFinalNextTurn = this.rooms.get(data.location.name).game.playerTurn();
+                                        currentPlayer = this.rooms.get(data.location.name).game.players[theFinalNextTurn];
+                                        setTimeout(() => {
+                                            this.io.to(currentPlayer.socketId).emit('your turn', {
+                                                location: this.rooms.get(data.location.name),
+                                                table: this.rooms.get(data.location.name),
+                                                game: this.rooms.get(data.location.name).game,
+                                                player: currentPlayer
+                                            });
+                                        }, 1000);
+                                    }, 1000);
+                                    this.io.to(data.location.name).emit('update boards', {
+                                        location: data.location,
+                                        players: this.rooms.get(data.location.name).game.players,
+                                        table: this.rooms.get(data.location.name)
+                                    });
+                                    this.io.to(data.location.name).emit('new message', {
+                                        location: data.location.name,
+                                        message: {
+                                            value: npcTurn.player.name + ' flipped over a card on their board',
+                                            id: uuidv4(),
+                                            user: 'server'
+                                        }
+                                    });
+                                } else {
+                                    setTimeout(() => {
+                                        this.io.to(currentPlayer.socketId).emit('your turn', {
+                                            location: this.rooms.get(data.location.name),
+                                            table: this.rooms.get(data.location.name),
+                                            game: this.rooms.get(data.location.name).game,
+                                            player: currentPlayer
+                                        });
+                                    }, 1000);
+                                }
+                            }, 1000);
+                            this.io.to(data.location.name).emit('update boards', {
+                                location: data.location,
+                                players: this.rooms.get(data.location.name).game.players,
+                                table: this.rooms.get(data.location.name)
+                            });
+                            this.io.to(data.location.name).emit('new message', {
+                                location: data.location.name,
+                                message: {
+                                    value: npcTurn.player.name + ' flipped over a card on their board',
+                                    id: uuidv4(),
+                                    user: 'server'
+                                }
+                            });
+                        }, 1000);
                     } else {
-                        currentPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
                         setTimeout(() => {
                             this.io.to(currentPlayer.socketId).emit('your turn', {
                                 location: this.rooms.get(data.location.name),
@@ -114,14 +213,12 @@ class TableHandler {
                                 game: this.rooms.get(data.location.name).game,
                                 player: currentPlayer
                             });
-                        }, 2000);
+                        }, 1000);
                     }
-                    this.io.to(data.location.name).emit('player flipped card', {
-                        player: currentPlayer,
+                    this.io.to(data.location.name).emit('update boards', {
                         location: data.location,
-                        playerSeat: npcTurn.seat,
-                        slotFlipped: npcTurn.slot,
-                        playerBoard: npcTurn.board
+                        players: this.rooms.get(data.location.name).game.players,
+                        table: this.rooms.get(data.location.name)
                     });
                     this.io.to(data.location.name).emit('new message', {
                         location: data.location.name,
@@ -153,20 +250,20 @@ class TableHandler {
                 }, 2000);
             } else {
                 setTimeout(() => {
-                    this.io.to(currentPlayer.socketId).emit('your turn', {
+                    this.io.to(currentPlayer.player.socketId).emit('your turn', {
                         location: this.rooms.get(data.location.name),
                         table: this.rooms.get(data.location.name),
                         game: this.rooms.get(data.location.name).game,
-                        player: currentPlayer
+                        player: currentPlayer.player
                     });
                     this.io.to(data.location.name).emit('new message', {
                         location: data.location.name,
                         message: {
                             id: uuidv4(),
-                            value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                            value: 'it\'s ' + currentPlayer.player.name + '\'s turn',
                             user: 'server',
                             type: 'turn notifier',
-                            player: currentPlayer
+                            player: currentPlayer.player
                         }
                     });
                 }, 1000);
