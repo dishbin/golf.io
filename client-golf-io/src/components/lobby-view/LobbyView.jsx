@@ -23,6 +23,8 @@ function LobbyView({ socket, state, setState }) {
     };
 
     const handleSeating = (data) => {
+        console.log('user seating');
+        console.log(data);
         setTables((prevTables) => {
             const newTables = {...prevTables};
             newTables[data.table.id] = data.table;

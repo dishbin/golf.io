@@ -5,9 +5,9 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
 
     const [tableSeat, setTableSeat] = useState(seat);
 
+    console.log(seat);
 
     useEffect(() => {
-        
     }, [socket]);
 
     const joinTable = (socket) => {
@@ -22,7 +22,7 @@ function Seat({ socket, seat, table, seatName, state, setState }) {
     if (seat !== 'empty') {
         return (
             <div className='Seat filled' style={{ backgroundColor: `${state.user.textColor}` }}>
-                {state.user.name}
+                {seat.name}
             </div>
         );
     } else {
