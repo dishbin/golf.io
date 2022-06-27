@@ -1,0 +1,30 @@
+.OtherPlayerBoard {
+    width: 6.6em;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    position: relative;
+    z-index: 1;
+
+    margin: 0.5em auto;
+    
+}
+
+.mat-div {
+    margin: auto;
+    width: 20em;
+    height: 13em;
+    margin-top: -5em;
+    background-color: rgb(254, 227, 204);
+
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+    box-shadow: 0em 0em 1em black;
+}

@@ -1,14 +1,18 @@
 .OtherPlayerSeat {
     width: 7.5em;
-    height: 5em;
+    height: auto;
     border-radius: 10px;
     box-shadow: 0em 0em 1em black;
-    margin-top: 2.5em;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.player-name {
+    margin: 0em auto;
+    margin-top: 0.5em;
 }
 
 .NPC {

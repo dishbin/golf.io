@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import OtherPlayerBoard from '../other-player-board/OtherPlayerBoard';
 import './OtherPlayerSeat.css';
 
 function OtherPlayerSeat({socket, state, setState, player, position}) {
@@ -34,7 +35,10 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
         {
             return (
                 <div className='OtherPlayerSeat NPC'>
-                    NPC
+                    <p className='player-name'>NPC</p>
+                    {(player.board) &&
+                        <OtherPlayerBoard board={player.board} player={player} />
+                    }
                 </div>
             );
         } 
@@ -42,7 +46,10 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
         {
             return (
                 <div className='OtherPlayerSeat' style={{ backgroundColor: player.textColor }}>
-                    {player.name}
+                    <p className='player-name'>{player.name}</p>
+                    {(player.board) &&
+                        <OtherPlayerBoard board={player.board} player={player} />
+                    }
                 </div>
             );
         } else {
