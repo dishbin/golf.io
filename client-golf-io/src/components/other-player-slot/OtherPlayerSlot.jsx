@@ -1,13 +1,13 @@
 import React from 'react';
-import './Slot.css';
+import './OtherPlayerSlot.css';
 import spadeImg from './suit-imgs/spade.png';
 import clubImg from './suit-imgs/clubs.png';
 import heartImg from './suit-imgs/hearts.png';
 import diamondImg from './suit-imgs/diamonds.png';
 import jokerImg from './suit-imgs/joker.png';
 
-function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, turnPhase, setTurnPhase }) {
-    
+function OtherPlayerSlot({ socket, slot }) {
+
     let values = {
         'ace': 'A',
         'two': '2',
@@ -33,29 +33,9 @@ function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, 
         joker: jokerImg
     }
 
-    const handleSlotChoice = (e) => {
-        if (isMyTurn) {
-            console.log('emitting slot choice!');
-            socket.emit('player choice', {
-                slot: slot,
-                user: state.user,
-                player: state.player,
-                location: state.table,
-                table: state.table,
-                seat: state.currentSeat,
-                choiceType: 'initial board flip'
-            });
-            if (turnPhase === 'initial choice') {
-                setTurnPhase('none');
-                setIsMyTurn(false);
-            }
-
-        }
-    }
-
     if (slot.isFaceUp) {
         return (
-            <div className='Slot'>
+            <div className='OtherPlayerSlot'>
                 <span style={{ color: `${(slot.card.suit === 'clubs' || slot.card.suit === 'spades') ? 'black' : (slot.card.suit === 'joker') ? 'purple' : 'red'}`}}>{values[slot.card.value]}</span><img className='suit' src={suitImgs[slot.card.suit]}></img>
             </div>
         );
@@ -63,14 +43,13 @@ function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, 
     else 
     {
         return (
-            <div className='Slot face-down' onClick={() => handleSlotChoice()}>
+            <div className='OtherPlayerSlot other-player-face-down'>
                 <div className='face-down-border'>
                     <div className='face-down-back'></div>
                 </div>
             </div>
         ); 
     }
-    
 }
 
-export default Slot;
+export default OtherPlayerSlot;

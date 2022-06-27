@@ -6,7 +6,17 @@ import TableScreen from '../table-screen/TableScreen';
 
 function Screen({ socket, state, setState }) {
 
+    const handleUserDisconnected = (data) => {
+        if (state.table !== undefined && state.table.name === data.table) {
+            setState({
+                ...state,
+                table: data.table
+            });
+        }
+    }
+
     useEffect(() => {
+        socket.on('user disconnected', data => handleUserDisconnected(data));
     }, [socket]);
 
     if (socket && state.table && state.inGame) 

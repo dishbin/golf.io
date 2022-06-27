@@ -12,8 +12,6 @@ class UserMovementHandler {
     }
 
     handleSeating (data) {
-        console.log('seating');
-        console.log(data);
         this.rooms.get('lobby').users.remove(data.user);
         let table = this.rooms.get(data.table);
         console.log(this.rooms);

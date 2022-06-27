@@ -8,15 +8,15 @@ class UserStore {
         return this.users;
     }
 
+    getSockets () {
+        return this.users.keys();
+    }
+
     get (user) {
         return this.users.get(user);
     }
 
     set (user) {
-        console.log(this.users);
-        console.log('setting');
-        console.log(user);
-        console.log(this.users);
         this.users.set(user.socketId, user);
     }
 
@@ -25,10 +25,7 @@ class UserStore {
     }
 
     userDisconnected (socketId) {
-        console.log(Object.keys(this.users));
-        // if (Object.keys(this.users).includes(socketId)) {
-        //     this.users.delete(socketId);
-        // }
+        this.users.delete(socketId);
     }
 
 }

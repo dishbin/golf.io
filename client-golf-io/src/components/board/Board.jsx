@@ -46,12 +46,12 @@ function Board({ socket, state, setState, board }) {
     }, [socket]);
     
     return (
-        <div className='mat-div'>
-            {(isMyTurn && showAlert && turnPhase === 'initial choice') && 
+        <div className={`mat-div ${(isMyTurn) ? 'is-my-turn' : ''}`}>
+            {/* {(isMyTurn && showAlert && turnPhase === 'initial choice') && 
                 <div className='alert'>
                     <InitialChoice socket={socket} state={state} setState={setState} />
                 </div>
-            }
+            } */}
             <div className='Board'>
                 {(slots !== null) &&
                     Object.values(slots).map(slot => <Slot 

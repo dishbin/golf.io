@@ -10,6 +10,10 @@ class Store {
         this.messages = new MessageStore();
         this.users = new UserStore();
     }
+
+    userDisconnected (data) {
+        this.users.userDisconnected(data.scoketId);
+    }
 }
 
 module.exports = Store;

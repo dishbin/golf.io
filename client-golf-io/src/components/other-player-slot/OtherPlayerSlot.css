@@ -1,24 +1,20 @@
-.Slot {
+.OtherPlayerSlot {
     width: 2em;
-    height: 3em;
+    height: 1.5em;
     border-radius: 3px;
     box-shadow: 0em 0em 0.25em black;
-    margin: 0.5em;
+    margin: 0.1em;
     background-color: white;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
 }
 
 .suit {
-    margin-top: -1em;
+    margin-left: 0.1em;
+    margin-top: 0.35em;
 }
 
-.face-down {
+.other-player-face-down {
     width: 1.35em;
-    height: 2.375em;
+    height: 0.9em;
     background-color: rgb(19, 19, 47);
     border: 5px solid white;
     border-style: inset;

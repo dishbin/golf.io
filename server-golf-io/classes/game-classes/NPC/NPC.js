@@ -19,7 +19,7 @@ class NPC {
         this.scorecard = data;
     }
 
-    startTurn (data) {
+    handleInitialBoardFlip (data) {
         let slot;
         for (let slot in this.board.slots) {
             if (this.board.slots[slot].isFaceUp === false) {
@@ -33,6 +33,23 @@ class NPC {
             board: this.board,
             player: this,
             seat: this.seat
+        }
+    }
+
+    static executeTurn (data) {
+        // main AI handler
+        let choiceType = 'initial board flip';
+
+        switch (choiceType) {
+            case 'initial board flip':
+                return {
+                    turnInfo: data.player.handleInitialBoardFlip({game: data.game}),
+                    choiceType: 'initial board flip',
+                    player: data.player,
+                    game: data.game,
+                    table: data.table
+                };
+                break;
         }
     }
 }

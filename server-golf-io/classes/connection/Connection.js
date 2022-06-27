@@ -9,6 +9,7 @@ const UserMovementHandler = require('../handlers/user-movement-handler/UserMovem
 const GameHandler = require('../handlers/game-handler/GameHandler');
 const PlayerTurnHandler = require('../handlers/player-turn-handler/PlayerTurnHandler');
 const ScoringHandler = require('../handlers/scoring-handler/ScoringHandler');
+const AIHandler = require('../handlers/ai-handler/AIHandler');
 
 class Connection {
     constructor (io, socket, rooms) {
@@ -30,6 +31,7 @@ class Connection {
         const gameHandler = new GameHandler(this.io, this.socket, this.rooms);
         const playerTurnHandler = new PlayerTurnHandler(this.io, this.socket, this.rooms);
         const scoringHandler = new ScoringHandler(this.io, this.socket, this.rooms);
+        const aiHandler = new AIHandler(this.io, this.socket, this.rooms);
 
 
         // *************************
@@ -41,21 +43,45 @@ class Connection {
     }
 
     disconnect () {
-
-        this.io.emit('user disconnected', {
-            socketId: this.socket.id
+        let updatedRoom;
+        let userWhoLeft;
+        this.rooms.forEach(room => {
+            [...room.users.getSockets()].forEach(socket => {
+                if (socket === this.socket.id) {
+                    userWhoLeft = room.users.get(socket).name;
+                    room.userDisconnected({
+                        socketId: socket,
+                        table: room
+                    });
+                    updatedRoom = room;
+                }
+            })
         });
 
-        // console.log(this.socket.id);
         
-        // this.rooms.forEach(room => {
-        //     room.users.userDisconnected(this.socket.id);
-        // });
-
-        // this.room.users.userDisconnected(this.socket.id);
-        // if (this.location !== 'lobby') {
-        //     this.rooms.get('lobby').users.userDisconnected(this.socket.id);
-        // }
+        this.io.emit('user disconnected', {
+            socketId: this.socket.id,
+            table: updatedRoom,
+            location: updatedRoom
+        });
+        this.io.to('lobby').emit('new message', {
+            location: 'lobby',
+            message: {
+                id: uuidv4(),
+                user: 'server',
+                value: userWhoLeft + ' disconnected'
+            }
+        });
+        if (updatedRoom !== undefined && updatedRoom.name !== 'lobby') {
+            this.io.to('lobby').emit('new message', {
+                location: updatedRoom.name,
+                message: {
+                    id: uuidv4(),
+                    user: 'server',
+                    value: userWhoLeft + ' disconnected'
+                }
+            });
+        }
     }
 }
 

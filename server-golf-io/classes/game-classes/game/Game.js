@@ -3,6 +3,7 @@ const Deck = require("../deck/Deck");
 const DiscardPile = require('../discard-pile/DiscardPile');
 const Scorecard = require("../scorecard/Scorecard");
 const GameScore = require('../game-score/GameScore');
+const NPC = require("../NPC/NPC");
 
 class Game {
     constructor (table) {
@@ -57,6 +58,31 @@ class Game {
     playerTurn () {
         this.incrementTurn();
         return this.currentTurn;
+    }
+
+    startNextPlayerTurn () {
+        return this.players[this.playerTurn()];
+    }
+
+    removePlayer (data) {
+        let playerToRemove = Object.entries(this.players)
+                                .filter(player => player[1].socketId === data)[0];
+        let npc = new NPC();
+        npc.assignBoard(playerToRemove[1].board);
+        npc.assignScorecard(playerToRemove[1].scores);
+        npc.assignSeat(playerToRemove[0]);
+        this.players[playerToRemove[0]] = npc;
+        return {
+            seat: playerToRemove[0],
+            player: npc
+        }
+    }
+
+    getCurrentPlayer() {
+        return {
+            player: this.players[this.currentTurn],
+            currentTurn: this.currentTurn
+        }
     }
 
 }

@@ -86,6 +86,21 @@ class Table extends Store {
         this.game = new Game(this);
     }
 
+    userDisconnected (data) {
+        this.users.userDisconnected(data.socketId);
+        if (this.name !== 'lobby') {
+            Object.entries(this.seats).forEach(seat => {
+                if (seat[1].socketId === data.socketId) {
+                    this.seats[seat[0]] = 'empty'
+                }
+            });
+        }
+        if (this.game !== undefined) {
+            let replacementPlayer = this.game.removePlayer(data.socketId);
+            this.seats[replacementPlayer.seat] = replacementPlayer.player;
+        }
+    }
+
 }
 
 module.exports = Table;
