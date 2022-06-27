@@ -45,7 +45,19 @@ class GameHandler {
         });
         if (data.choiceType === 'board flip') {
             let nextPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.playerTurn()];
+            console.log('NEXT PLAYER');
+            console.log(nextPlayer);
             if (nextPlayer.playerType === 'NPC') {
+                this.io.to(data.location.name).emit('new message', {
+                    location: data.location.name,
+                    message: {
+                        id: uuidv4(),
+                        value: 'it\'s ' + nextPlayer.name + '\'s turn',
+                        user: 'server',
+                        player: nextPlayer,
+                        type: 'turn notifier'
+                    }
+                });
                 let npcTurn = nextPlayer.startTurn({
                     game: this.rooms.get(data.location.name).game
                 });
@@ -55,18 +67,18 @@ class GameHandler {
                     if (this.rooms.get(data.location.name).game.players[nextTurn].playerType === 'NPC') {
                         console.log('another NPC');
                     } else {
-                        currentPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                        nextPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
                         setTimeout(() => {
-                            this.io.to(currentPlayer.socketId).emit('your turn', {
+                            this.io.to(nextPlayer.socketId).emit('your turn', {
                                 location: this.rooms.get(data.location.name),
                                 table: this.rooms.get(data.location.name),
                                 game: this.rooms.get(data.location.name).game,
-                                player: currentPlayer
+                                player: nextPlayer
                             });
                         }, 2000);
                     }
                     this.io.to(data.location.name).emit('player flipped card', {
-                        player: currentPlayer,
+                        player: nextPlayer,
                         location: data.location,
                         playerSeat: npcTurn.seat,
                         slotFlipped: npcTurn.slot,
@@ -84,7 +96,15 @@ class GameHandler {
             } 
             else 
             {
-
+                setTimeout(() => {
+                    let nextPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                    this.io.to(nextPlayer.socketId).emit('your turn', {
+                        location: this.rooms.get(data.location.name),
+                        table: this.rooms.get(data.location.name),
+                        game: this.rooms.get(data.location.name).game,
+                        player: nextPlayer
+                    });
+                }, 2000);
             }
             this.io.to(nextPlayer.socketId).emit('your turn')
         }

@@ -87,6 +87,16 @@ class TableHandler {
             });
             let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
             if (currentPlayer.playerType === 'NPC') {
+                this.io.to(data.location.name).emit('new message', {
+                    location: data.location.name,
+                    message: {
+                        id: uuidv4(),
+                        value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                        user: 'server',
+                        player: currentPlayer,
+                        type: 'turn notifier'
+                    }
+                });
                 let npcTurn = currentPlayer.startTurn({
                     game: this.rooms.get(data.location.name).game
                 });
@@ -128,7 +138,17 @@ class TableHandler {
                         location: this.rooms.get(data.location.name),
                         table: this.rooms.get(data.location.name),
                         game: this.rooms.get(data.location.name).game,
-                        player: currentPlayer
+                        player: nextPlayer
+                    });
+                    this.io.to(data.location.name).emit('new message', {
+                        location: data.location.name,
+                        message: {
+                            id: uuidv4(),
+                            value: 'it\'s ' + nextPlayer.name + '\'s turn',
+                            user: 'server',
+                            type: 'turn notifier',
+                            player: nextPlayer
+                        }
                     });
                 }, 2000);
             } else {
@@ -138,6 +158,16 @@ class TableHandler {
                         table: this.rooms.get(data.location.name),
                         game: this.rooms.get(data.location.name).game,
                         player: currentPlayer
+                    });
+                    this.io.to(data.location.name).emit('new message', {
+                        location: data.location.name,
+                        message: {
+                            id: uuidv4(),
+                            value: 'it\'s ' + currentPlayer.name + '\'s turn',
+                            user: 'server',
+                            type: 'turn notifier',
+                            player: currentPlayer
+                        }
                     });
                 }, 1000);
             }
