@@ -11,6 +11,8 @@ function Board({ socket, state, setState, board }) {
 
     const [turnPhase, setTurnPhase] = useState('none');
 
+    const [showAlert, setShowAlert] = useState(false);
+
     const handlePlayerBoard = (data) => {
         if (data.table.name === state.table.name && data.location === state.user.socketId) {
             setSlots({...data.board.slots});
@@ -20,6 +22,10 @@ function Board({ socket, state, setState, board }) {
     const handleTurn = (data) => {
         setTurnPhase('initial choice');
         setIsMyTurn(true);
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 2000);
     }
 
     useEffect(() => {
@@ -41,8 +47,10 @@ function Board({ socket, state, setState, board }) {
     
     return (
         <div className='mat-div'>
-            {(isMyTurn && turnPhase === 'initial choice') && 
-                <InitialChoice socket={socket} state={state} setState={setState} />
+            {(isMyTurn && showAlert && turnPhase === 'initial choice') && 
+                <div className='alert'>
+                    <InitialChoice socket={socket} state={state} setState={setState} />
+                </div>
             }
             <div className='Board'>
                 {(slots !== null) &&
@@ -53,6 +61,10 @@ function Board({ socket, state, setState, board }) {
                         slot={slot}
                         slotName={slot.slotName}
                         key={slot.slotName}
+                        isMyTurn={isMyTurn}
+                        setIsMyTurn={setIsMyTurn}
+                        turnPhase={turnPhase}
+                        setTurnPhase={setTurnPhase}
                     />)
                 }
             </div>

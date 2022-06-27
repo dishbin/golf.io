@@ -42,6 +42,7 @@ class Game {
             } else if (seat[1].playerType === 'NPC') {
                 seat[1].assignBoard(new Board(this.deck.drawBoard()));
                 seat[1].assignScorecard(new Scorecard());
+                seat[1].assignSeat(seat[0]);
                 players[seat[0]] = seat[1];
             }
         });
@@ -51,6 +52,11 @@ class Game {
 
         this.discard = new DiscardPile(this.deck);
         this.discard.put(this.deck.draw());
+    }
+
+    playerTurn () {
+        this.incrementTurn();
+        return this.currentTurn;
     }
 
 }

@@ -6,17 +6,21 @@ function OtherPlayerSeat({socket, state, setState, player, position}) {
     const [playing, setPlaying] = useState(false);
     const [seatedPlayer, setSeatedPlayer] = useState(null);
 
-    // const handleUpdatePlayers = (data) => {
-    //     console.log(data);
-    //     console.log('position: ' + position, data.players[position]);
-    //     setSeatedPlayer(data.players[position]);
-    //     if(playing === false) {
-    //         setPlaying(true);
+    // const handlePlayerBoard = (data) => {
+    //     if (data.table.name === state.table.name && data.player.id === seatedPlayer.id) {
+    //         setSeatedPlayer(data.player);
     //     }
     // }
 
+    const handlePlayerFlippingCard = (data) => {
+        if (data.playerSeat === position) {
+            setSeatedPlayer(data.player);
+        }
+    }
+
     useEffect(() => {
-        // socket.on('update players', data => handleUpdatePlayers(data));
+        socket.on('player flipped card', data => handlePlayerFlippingCard(data));
+        // socket.on('player board', data => handlePlayerBoard(data));
     }, [socket]);
 
         if (player === 'empty') {

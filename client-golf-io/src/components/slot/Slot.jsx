@@ -6,7 +6,7 @@ import heartImg from './suit-imgs/hearts.png';
 import diamondImg from './suit-imgs/diamonds.png';
 import jokerImg from './suit-imgs/joker.png';
 
-function Slot({ socket, state, setState, slot, slotName }) {
+function Slot({ socket, state, setState, slot, slotName, isMyTurn, setIsMyTurn, turnPhase, setTurnPhase }) {
     
     let values = {
         'ace': 'A',
@@ -33,6 +33,25 @@ function Slot({ socket, state, setState, slot, slotName }) {
         joker: jokerImg
     }
 
+    const handleSlotChoice = (e) => {
+        if (isMyTurn) {
+            console.log('emitting slot choice!');
+            socket.emit('slot choice', {
+                slot: slot,
+                user: state.user,
+                player: state.player,
+                location: state.table,
+                table: state.table,
+                seat: state.currentSeat,
+                choiceType: 'board choice'
+            });
+            if (turnPhase === 'initial choice') {
+                setTurnPhase('none');
+                setIsMyTurn(false);
+            }
+
+        }
+    }
 
     if (slot.isFaceUp) {
         return (
@@ -44,7 +63,7 @@ function Slot({ socket, state, setState, slot, slotName }) {
     else 
     {
         return (
-            <div className='Slot face-down'>
+            <div className='Slot face-down' onClick={() => handleSlotChoice()}>
                 <div className='face-down-border'>
                     <div className='face-down-back'></div>
                 </div>

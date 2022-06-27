@@ -87,8 +87,50 @@ class TableHandler {
             });
             let currentPlayer = this.rooms.get(data.location.name).game.players[this.rooms.get(data.location.name).game.currentTurn];
             if (currentPlayer.playerType === 'NPC') {
-                console.log('NPC turn');
-                console.log(currentPlayer);
+                let npcTurn = currentPlayer.startTurn({
+                    game: this.rooms.get(data.location.name).game
+                });
+                let nextTurn;
+                setTimeout(() => {
+                    nextTurn = this.rooms.get(data.location.name).game.playerTurn();
+                    if (this.rooms.get(data.location.name).game.players[nextTurn].playerType === 'NPC') {
+                        console.log('another NPC');
+                    } else {
+                        currentPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                        setTimeout(() => {
+                            this.io.to(currentPlayer.socketId).emit('your turn', {
+                                location: this.rooms.get(data.location.name),
+                                table: this.rooms.get(data.location.name),
+                                game: this.rooms.get(data.location.name).game,
+                                player: currentPlayer
+                            });
+                        }, 2000);
+                    }
+                    this.io.to(data.location.name).emit('player flipped card', {
+                        player: currentPlayer,
+                        location: data.location,
+                        playerSeat: npcTurn.seat,
+                        slotFlipped: npcTurn.slot,
+                        playerBoard: npcTurn.board
+                    });
+                    this.io.to(data.location.name).emit('new message', {
+                        location: data.location.name,
+                        message: {
+                            value: npcTurn.player.name + ' flipped over a card on their board',
+                            id: uuidv4(),
+                            user: 'server'
+                        }
+                    });
+                }, 1000);
+                setTimeout(() => {
+                    let nextPlayer = this.rooms.get(data.location.name).game.players[nextTurn];
+                    this.io.to(nextPlayer.socketId).emit('your turn', {
+                        location: this.rooms.get(data.location.name),
+                        table: this.rooms.get(data.location.name),
+                        game: this.rooms.get(data.location.name).game,
+                        player: currentPlayer
+                    });
+                }, 2000);
             } else {
                 setTimeout(() => {
                     this.io.to(currentPlayer.socketId).emit('your turn', {

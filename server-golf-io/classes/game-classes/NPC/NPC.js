@@ -7,6 +7,10 @@ class NPC {
         this.playerType = 'NPC';
     }
 
+    assignSeat (data) {
+        this.seat = data;
+    }
+
     assignBoard (data) {
         this.board = data;
     }
@@ -15,10 +19,21 @@ class NPC {
         this.scorecard = data;
     }
 
-    handleTurnStart (data) {
-        console.log('NPC TURN STARTING');
-        console.log(data);
-        console.log(this);
+    startTurn (data) {
+        let slot;
+        for (let slot in this.board.slots) {
+            if (this.board.slots[slot].isFaceUp === false) {
+                slot = this.board.slots[slot];
+                slot.flipUp();
+                break;
+            }
+        }
+        return {
+            slot: slot,
+            board: this.board,
+            player: this,
+            seat: this.seat
+        }
     }
 }
 

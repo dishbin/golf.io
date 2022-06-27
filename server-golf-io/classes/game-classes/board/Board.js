@@ -33,6 +33,13 @@ class Board {
             }
         }
     }
+
+    flipSlotUp (data) {
+        console.log('flipping slot');
+        console.log(data);
+        this.slots[data.slotName].flipUp();
+        console.log(this.slots);
+    }
 }
 
 module.exports = Board;
