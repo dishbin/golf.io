@@ -1,16 +1,10 @@
-import React, { isValidElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Seat from '../seat/Seat';
 import './TableTile.css';
 
 function TableTile({ socket, table, state, setState }) {
 
     const [isFull, setIsFull] = useState(false);
-
-    const handleDisconnection = (data) => {
-        console.log('disconnected');
-        console.log(data);
-        console.log(table);
-    }
 
     const handleFullTable = (data) => {
         if (data.table.id === table.id) {
@@ -30,12 +24,10 @@ function TableTile({ socket, table, state, setState }) {
         }
         socket.on('table is full', data => handleFullTable(data));
         socket.on('table not full', data => handleTableNoLongerFull(data));
-        socket.on('user disconnected', data => handleDisconnection(data));
 
         return (() => {
             socket.off('table is full', handleFullTable);
             socket.off('table not full', handleTableNoLongerFull);
-            socket.off('user disconnected', handleDisconnection);
         })
     }, [socket]);
 

@@ -11,7 +11,7 @@ function LobbyView({ socket, state, setState }) {
             const newTables = {...prevTables};
             newTables[data.table.id] = data.table;
             return newTables;
-        })
+        });
     };
 
     const deleteTableListener = (tableId) => {
@@ -38,6 +38,17 @@ function LobbyView({ socket, state, setState }) {
         });
     }
 
+    const handleDisconnection = (data) => {
+        console.log('DISCONNECTING');
+        console.log(data);
+        console.group(tables);
+        setTables((prevTables) => {
+            let newTables = {...prevTables};
+            newTables[data.table.id] = data.table;
+            return newTables;
+        })
+    }
+
     useEffect(() => {
 
         socket.on('new table', data => tableListener(data));
@@ -45,6 +56,8 @@ function LobbyView({ socket, state, setState }) {
 
         socket.on('user seating', data => handleSeating(data));
         socket.on('user got up', data => handleLeaving(data));
+
+        socket.on('user disconnected', data => handleDisconnection(data));
 
         socket.emit('get all tables', {
             user: state.user
@@ -54,6 +67,7 @@ function LobbyView({ socket, state, setState }) {
             socket.off('new table', tableListener);
             socket.off('delete table', deleteTableListener);
             socket.off('user seating', handleSeating);
+            socket.off('user disconnected', handleDisconnection);
         })
     }, [socket]);
 

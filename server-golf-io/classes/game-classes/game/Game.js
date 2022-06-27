@@ -59,6 +59,14 @@ class Game {
         return this.currentTurn;
     }
 
+    removePlayer (data) {
+        console.log('REMOVING PLAYER');
+        console.log(data);
+        let playerToRemove = Object.entries(this.players)
+                                .filter(player => player[1].socketId === data.socketId)[0];
+        console.log(playerToRemove);
+    }
+
 }
 
 module.exports = Game;

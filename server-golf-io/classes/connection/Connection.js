@@ -41,21 +41,45 @@ class Connection {
     }
 
     disconnect () {
-
-        this.io.emit('user disconnected', {
-            socketId: this.socket.id
+        let updatedRoom;
+        let userWhoLeft;
+        this.rooms.forEach(room => {
+            [...room.users.getSockets()].forEach(socket => {
+                if (socket === this.socket.id) {
+                    userWhoLeft = room.users.get(socket).name;
+                    room.userDisconnected({
+                        socketId: socket,
+                        table: room
+                    });
+                    updatedRoom = room;
+                }
+            })
         });
 
-        // console.log(this.socket.id);
         
-        // this.rooms.forEach(room => {
-        //     room.users.userDisconnected(this.socket.id);
-        // });
-
-        // this.room.users.userDisconnected(this.socket.id);
-        // if (this.location !== 'lobby') {
-        //     this.rooms.get('lobby').users.userDisconnected(this.socket.id);
-        // }
+        this.io.emit('user disconnected', {
+            socketId: this.socket.id,
+            table: updatedRoom,
+            location: updatedRoom
+        });
+        this.io.to('lobby').emit('new message', {
+            location: 'lobby',
+            message: {
+                id: uuidv4(),
+                user: 'server',
+                value: userWhoLeft + ' disconnected'
+            }
+        });
+        if (updatedRoom !== undefined && updatedRoom.name !== 'lobby') {
+            this.io.to('lobby').emit('new message', {
+                location: updatedRoom.name,
+                message: {
+                    id: uuidv4(),
+                    user: 'server',
+                    value: userWhoLeft + ' disconnected'
+                }
+            });
+        }
     }
 }
 
