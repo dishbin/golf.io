@@ -37,7 +37,8 @@ function TableTile({ socket, table, state, setState }) {
             <h3 className='table-name' style={{color: `${(isFull) ? 'red' : 'gray'}`}}>{table.name}</h3>
             <div>
                 <div className='seat-array'>
-                    {Object.entries(table.seats)
+                    {(table !== null && table !== undefined) &&
+                    Object.entries(table.seats)
                         .map(seat => 
                             <Seat 
                                 key={seat[0]}

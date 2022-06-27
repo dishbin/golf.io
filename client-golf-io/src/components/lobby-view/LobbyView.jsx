@@ -39,14 +39,14 @@ function LobbyView({ socket, state, setState }) {
     }
 
     const handleDisconnection = (data) => {
-        console.log('DISCONNECTING');
-        console.log(data);
-        console.group(tables);
-        setTables((prevTables) => {
-            let newTables = {...prevTables};
-            newTables[data.table.id] = data.table;
-            return newTables;
-        })
+        if (data.table.name !== 'lobby') {
+            setTables((prevTables) => {
+                let newTables = {...prevTables};
+                newTables[data.table.id] = data.table;
+                return newTables;
+            });
+        }
+        
     }
 
     useEffect(() => {

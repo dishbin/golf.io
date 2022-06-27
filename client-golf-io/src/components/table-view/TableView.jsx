@@ -77,10 +77,21 @@ function TableView({ socket, state, setState }) {
         }
     }
 
+    const handleDisconnection = (data) => {
+        if (state.table.name === data.table.name) {
+            handlePlayers({
+                players: data.table.seats,
+                table: data.table
+            });
+        }
+    }
+
     useEffect(() => {
 
         socket.on('user seating', data => handleUserSeating(data));
         socket.on('all players', data => handlePlayers(data));
+        socket.on('user disconnected', data => handleDisconnection(data));
+
         socket.emit('get players', {
             location: state.table,
             user: state.user

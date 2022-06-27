@@ -17,10 +17,6 @@ class UserStore {
     }
 
     set (user) {
-        console.log(this.users);
-        console.log('setting');
-        console.log(user);
-        console.log(this.users);
         this.users.set(user.socketId, user);
     }
 
@@ -29,8 +25,6 @@ class UserStore {
     }
 
     userDisconnected (socketId) {
-        console.log('DELETING USER');
-        console.log(socketId);
         this.users.delete(socketId);
     }
 

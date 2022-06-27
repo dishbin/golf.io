@@ -87,17 +87,17 @@ class Table extends Store {
     }
 
     userDisconnected (data) {
-        this.users.userDisconnected(data.scoketId);
-        
-        if (this.game !== undefined) {
-            this.game.removePlayer(data.socketId);
-        }
+        this.users.userDisconnected(data.socketId);
         if (this.name !== 'lobby') {
             Object.entries(this.seats).forEach(seat => {
                 if (seat[1].socketId === data.socketId) {
                     this.seats[seat[0]] = 'empty'
                 }
             });
+        }
+        if (this.game !== undefined) {
+            let replacementPlayer = this.game.removePlayer(data.socketId);
+            this.seats[replacementPlayer.seat] = replacementPlayer.player;
         }
     }
 
